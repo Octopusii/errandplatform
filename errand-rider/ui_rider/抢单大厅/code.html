@@ -1,0 +1,169 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: 'class', theme: { extend: { colors: { 'tertiary-fixed': '#e0e3e4', 'secondary-container': '#d2e1fa', 'tertiary': '#3f4344', 'on-tertiary': '#ffffff', 'primary-fixed': '#dae1ff', 'secondary-fixed-dim': '#b9c7e0', 'on-tertiary-fixed-variant': '#434748', 'error-container': '#ffdad6', 'surface': '#f8f9ff', 'surface-dim': '#d9d9e4', 'background': '#faf8ff', 'on-background': '#191b23', 'tertiary-container': '#565a5b', 'on-error': '#ffffff', 'surface-tint': '#1155d0', 'on-secondary-container': '#556379', 'surface-variant': '#e1e2ec', 'on-tertiary-fixed': '#181c1d', 'surface-container': '#ededf8', 'on-error-container': '#93000a', 'surface-container-high': '#e7e7f2', 'surface-bright': '#faf8ff', 'on-secondary-fixed': '#0d1c2e', 'on-surface': '#191b23', 'on-primary-fixed': '#001849', 'secondary-fixed': '#d5e3fc', 'on-surface-variant': '#434654', 'primary': '#003b9a', 'surface-container-low': '#f3f3fd', 'primary-container': '#0050cb', 'on-primary-container': '#c1cfff', 'error': '#ba1a1a', 'outline': '#727687', 'secondary': '#515f74', 'on-primary': '#ffffff', 'outline-variant': '#c3c6d6', 'inverse-primary': '#b3c5ff', 'on-secondary': '#ffffff', 'on-secondary-fixed-variant': '#3a485c', 'inverse-on-surface': '#f0f0fb', 'surface-container-highest': '#e1e2ec', 'tertiary-fixed-dim': '#c4c7c8', 'on-tertiary-container': '#ced1d2', 'surface-container-lowest': '#ffffff', 'inverse-surface': '#2e3038', 'primary-fixed-dim': '#b3c5ff', 'on-primary-fixed-variant': '#003fa4' }, borderRadius: { 'DEFAULT': '0.25rem', 'lg': '0.5rem', 'xl': '0.75rem', 'full': '9999px' }, spacing: { 'base': '4px', 'margin-page': '16px', 'gutter-grid': '12px', 'stack-lg': '24px', 'stack-sm': '8px', 'stack-md': '16px' }, fontFamily: { 'headline-md': ['Plus Jakarta Sans'], 'label-md': ['Inter'], 'body-md': ['Inter'], 'body-lg': ['Inter'], 'headline-sm': ['Plus Jakarta Sans'], 'headline-lg': ['Plus Jakarta Sans'], 'headline-lg-mobile': ['Plus Jakarta Sans'] }, fontSize: { 'headline-md': ['20px', { lineHeight: '28px', fontWeight: '600' }], 'label-md': ['12px', { lineHeight: '16px', letterSpacing: '0.02em', fontWeight: '500' }], 'body-md': ['14px', { lineHeight: '20px', fontWeight: '400' }], 'body-lg': ['16px', { lineHeight: '24px', fontWeight: '400' }], 'headline-sm': ['18px', { lineHeight: '24px', fontWeight: '600' }], 'headline-lg': ['24px', { lineHeight: '32px', fontWeight: '700' }], 'headline-lg-mobile': ['22px', { lineHeight: '28px', fontWeight: '700' }] } } } }</script><style>@layer base { body { -webkit-tap-highlight-color: transparent; overscroll-behavior-y: contain; } .pb-safe { padding-bottom: env(safe-area-inset-bottom); } .pt-safe { padding-top: env(safe-area-inset-top); } }</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface font-body-md"><header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl pt-safe shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-14 px-margin-page flex items-center justify-between"><h1 class="font-headline-md text-headline-md">抢单大厅</h1><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></header><main class="pt-14 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full gap-stack-md px-margin-page pb-stack-lg">
+<!-- Status & Location Header -->
+<div class="flex items-center justify-between py-stack-md bg-surface/90 backdrop-blur-md sticky top-0 z-10 -mx-margin-page px-margin-page">
+<div class="flex items-center gap-2 max-w-[60%]">
+<span class="material-symbols-outlined text-primary text-[20px]">location_on</span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface-variant">当前位置</span>
+<span class="font-body-md text-on-surface truncate">上海市黄浦区南京东路街道</span>
+</div>
+</div>
+<div class="relative flex items-center bg-surface-container-high p-1 rounded-full cursor-pointer transition-all duration-300 w-28" id="work-status-toggle">
+<div class="absolute left-1 w-[52px] h-7 bg-primary rounded-full transition-transform duration-300 translate-x-0" id="toggle-blob"></div>
+<span class="relative z-10 flex-1 text-center font-label-md text-on-primary transition-colors duration-300" data-status="on">开工</span>
+<span class="relative z-10 flex-1 text-center font-label-md text-on-surface-variant transition-colors duration-300" data-status="off">收工</span>
+</div>
+</div>
+<!-- Live Map Preview (Strategic Element) -->
+<div class="relative w-full h-32 rounded-xl overflow-hidden shadow-sm">
+<div class="w-full h-full bg-cover bg-center" data-location="Shanghai Huangpu District" style="background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuDPBmstYLHl0iIRMib_YHktk5PQvnqzZWF-NCmmUTOqVHnplNh5OhrUI4TjEFuX9q66nAUvHZygS1zV9MYC-y7wJ3OZ5jYy59oIKcN7I4fErd_H2FyZRYuZQn0PYMUJOGVzIumQbrVpT1hzQubmu-IBcPyJsPgcwDuYk9_4CTzwlRKQ3c3pAAPFUkooumvrWWwCwu6FuzHQYUeDZNRYotnPHPUBQjEOqBbdWS112zwoeM217YEZySkFfRBpDaD-GcUiQsswpuOIIl-x&quot;);"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent flex items-end p-3">
+<div class="flex items-center gap-2 text-white">
+<div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+<span class="font-label-md">附近有 12 个新订单待抢</span>
+</div>
+</div>
+</div>
+<!-- Order Cards Stream -->
+<div class="flex flex-col gap-stack-md">
+<!-- Order Card 1 -->
+<div class="bg-surface-container-low rounded-xl p-stack-md shadow-sm flex flex-col gap-3 relative overflow-hidden transition-transform active:scale-[0.98]">
+<div class="flex justify-between items-start">
+<div class="flex gap-2">
+<span class="bg-primary-container text-on-primary-container px-2 py-0.5 rounded-full font-label-md">帮我送</span>
+<span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded-full font-label-md">配送费加价</span>
+</div>
+<div class="text-right">
+<span class="font-label-md text-on-surface-variant">预计收入</span>
+<div class="font-headline-lg-mobile text-primary">¥ 28.50</div>
+</div>
+</div>
+<div class="flex flex-col gap-3 py-1">
+<div class="flex gap-3">
+<div class="flex flex-col items-center pt-1">
+<span class="material-symbols-outlined text-[18px] text-primary">radio_button_checked</span>
+<div class="w-[1px] h-6 bg-outline-variant my-1"></div>
+<span class="material-symbols-outlined text-[18px] text-error">location_on</span>
+</div>
+<div class="flex-1 flex flex-col gap-4">
+<div class="min-w-0">
+<div class="font-label-md text-on-surface-variant">取货：南京西路 1266 号恒隆广场</div>
+<div class="font-body-md text-on-surface-variant text-[12px]">距离当前 1.2km</div>
+</div>
+<div class="min-w-0">
+<div class="font-label-md text-on-surface">送货：陆家嘴环路 1000 号恒生银行大厦</div>
+<div class="font-body-md text-on-surface-variant text-[12px]">配送距离 4.5km</div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2 bg-surface-container-highest/50 p-2 rounded-lg">
+<span class="material-symbols-outlined text-[16px] text-on-tertiary-fixed-variant">info</span>
+<span class="font-label-md text-on-surface-variant">备注：急件，需送货上门，请带保温袋</span>
+</div>
+<button class="grab-btn w-full bg-primary text-on-primary py-3 rounded-lg font-headline-sm shadow-md active:bg-primary-container transition-all flex items-center justify-center gap-2">
+<span class="">立即抢单</span>
+<span class="material-symbols-outlined">bolt</span>
+</button>
+</div>
+<!-- Order Card 2 -->
+<div class="bg-surface-container-low rounded-xl p-stack-md shadow-sm flex flex-col gap-3 relative overflow-hidden transition-transform active:scale-[0.98]">
+<div class="flex justify-between items-start">
+<div class="flex gap-2">
+<span class="bg-tertiary-fixed text-on-tertiary-fixed px-2 py-0.5 rounded-full font-label-md">帮我买</span>
+</div>
+<div class="text-right">
+<span class="font-label-md text-on-surface-variant">预计收入</span>
+<div class="font-headline-lg-mobile text-primary">¥ 15.00</div>
+</div>
+</div>
+<div class="flex flex-col gap-3 py-1">
+<div class="flex gap-3">
+<div class="flex flex-col items-center pt-1">
+<span class="material-symbols-outlined text-[18px] text-primary">shopping_cart</span>
+<div class="w-[1px] h-6 bg-outline-variant my-1"></div>
+<span class="material-symbols-outlined text-[18px] text-error">location_on</span>
+</div>
+<div class="flex-1 flex flex-col gap-4">
+<div class="min-w-0">
+<div class="font-label-md text-on-surface-variant">购买：全家便利店 (汉口路店)</div>
+<div class="font-body-md text-on-surface-variant text-[12px]">距离当前 0.5km</div>
+</div>
+<div class="min-w-0">
+<div class="font-label-md text-on-surface">送货：外滩街道福州路 22 号</div>
+<div class="font-body-md text-on-surface-variant text-[12px]">配送距离 0.8km</div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2 bg-surface-container-highest/50 p-2 rounded-lg">
+<span class="material-symbols-outlined text-[16px] text-on-tertiary-fixed-variant">receipt</span>
+<span class="font-label-md text-on-surface-variant">商品：冰镇可乐 x2, 乐事薯片 x1</span>
+</div>
+<button class="grab-btn w-full bg-primary text-on-primary py-3 rounded-lg font-headline-sm shadow-md active:bg-primary-container transition-all flex items-center justify-center gap-2">
+<span class="">立即抢单</span>
+<span class="material-symbols-outlined">bolt</span>
+</button>
+</div>
+<!-- Empty State Logic (Visual Only) -->
+<div class="flex flex-col items-center justify-center py-stack-lg opacity-40">
+<div class="w-16 h-1 w-24 bg-surface-container-highest rounded-full mb-4"></div>
+<span class="font-label-md text-on-surface-variant">没有更多订单了</span>
+</div>
+</div>
+</div>
+<script>
+  // Toggle Switch Logic
+  const toggle = document.getElementById('work-status-toggle');
+  const blob = document.getElementById('toggle-blob');
+  const labels = toggle.querySelectorAll('span');
+  let isWorking = true;
+
+  toggle.addEventListener('click', () => {
+    isWorking = !isWorking;
+    if (isWorking) {
+      blob.style.transform = 'translateX(0)';
+      labels[0].classList.replace('text-on-surface-variant', 'text-on-primary');
+      labels[1].classList.replace('text-on-primary', 'text-on-surface-variant');
+      toggle.classList.replace('bg-error-container', 'bg-surface-container-high');
+    } else {
+      blob.style.transform = 'translateX(52px)';
+      labels[0].classList.replace('text-on-primary', 'text-on-surface-variant');
+      labels[1].classList.replace('text-on-surface-variant', 'text-on-primary');
+      // Subtle change to indicate offline
+    }
+  });
+
+  // Grab Order Animation
+  document.querySelectorAll('.grab-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      const card = this.closest('.bg-surface-container-low');
+      
+      // Feedback: Button flash
+      this.innerHTML = '<span>抢单中...</span><span class="material-symbols-outlined animate-spin">refresh</span>';
+      this.classList.add('opacity-80');
+      
+      setTimeout(() => {
+        // Success animation
+        this.innerHTML = '<span>成功抢单!</span><span class="material-symbols-outlined">check_circle</span>';
+        this.style.backgroundColor = '#10b981'; // Success green
+        
+        // Slide out
+        setTimeout(() => {
+          card.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+          card.style.transform = 'translateX(100%)';
+          card.style.opacity = '0';
+          setTimeout(() => card.remove(), 500);
+        }, 800);
+      }, 1200);
+    });
+  });
+</script></main><nav class="fixed bottom-0 w-full z-50 bg-surface/80 backdrop-blur-xl pb-safe shadow-[0_-1px_8px_rgba(0,0,0,0.04)]" data-active-classes="text-primary"><div class="h-16 flex items-center justify-around"><a class="flex flex-col items-center justify-center gap-1 flex-1 text-primary" data-path="grab-orders" href="#"><span class="material-symbols-outlined">task</span><span class="font-label-md text-label-md">抢单</span></a><a class="flex flex-col items-center justify-center gap-1 flex-1 text-on-surface-variant" data-path="orders" href="#"><span class="material-symbols-outlined">receipt_long</span><span class="font-label-md text-label-md">订单</span></a><a class="flex flex-col items-center justify-center gap-1 flex-1 text-on-surface-variant" data-path="profile" href="#"><span class="material-symbols-outlined">account_circle</span><span class="font-label-md text-label-md">我的</span></a></div></nav>
+
+</body></html>
