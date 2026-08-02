@@ -1,0 +1,221 @@
+<!DOCTYPE html><html lang="zh-CN"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "background": "#faf8ff",
+            "surface-container-lowest": "#ffffff",
+            "inverse-primary": "#b3c5ff",
+            "surface-dim": "#cbdbf5",
+            "surface-bright": "#faf8ff",
+            "tertiary": "#3f4344",
+            "surface-container": "#ededf8",
+            "primary-fixed": "#dae1ff",
+            "secondary": "#515f74",
+            "inverse-surface": "#2e3038",
+            "on-tertiary-fixed-variant": "#434748",
+            "error-container": "#ffdad6",
+            "on-surface-variant": "#434654",
+            "surface-tint": "#1155d0",
+            "primary-container": "#0050cb",
+            "on-tertiary-container": "#ced1d2",
+            "tertiary-fixed-dim": "#c4c7c8",
+            "secondary-fixed-dim": "#b9c7e0",
+            "surface-variant": "#e1e2ec",
+            "surface": "#f8f9ff",
+            "outline-variant": "#c3c6d6",
+            "surface-container-low": "#f3f3fd",
+            "on-surface": "#191b23",
+            "on-primary-fixed-variant": "#003fa4",
+            "on-primary-fixed": "#001849",
+            "on-error-container": "#93000a",
+            "error": "#ba1a1a",
+            "surface-container-high": "#e7e7f2",
+            "on-tertiary": "#ffffff",
+            "on-error": "#ffffff",
+            "on-primary-container": "#c1cfff",
+            "secondary-container": "#d2e1fa",
+            "on-background": "#191b23",
+            "outline": "#727687",
+            "surface-container-highest": "#e1e2ec",
+            "inverse-on-surface": "#f0f0fb",
+            "on-secondary": "#ffffff",
+            "tertiary-fixed": "#e0e3e4",
+            "secondary-fixed": "#d5e3fc",
+            "primary": "#003b9a",
+            "on-tertiary-fixed": "#181c1d",
+            "primary-fixed-dim": "#b3c5ff",
+            "on-secondary-fixed-variant": "#3a485c",
+            "on-secondary-fixed": "#0d1c2e",
+            "on-secondary-container": "#556379",
+            "on-primary": "#ffffff",
+            "tertiary-container": "#565a5b"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "stack-sm": "8px",
+            "stack-md": "16px",
+            "base": "4px",
+            "stack-lg": "24px",
+            "gutter-grid": "12px",
+            "margin-page": "16px"
+          },
+          "fontFamily": {
+            "headline-md": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "body-md": ["Inter"],
+            "body-lg": ["Inter"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "label-md": ["Inter"]
+          },
+          "fontSize": {
+            "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "headline-lg-mobile": ["22px", { "lineHeight": "28px", "fontWeight": "700" }],
+            "headline-lg": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    @layer base {
+      .pt-safe { padding-top: env(safe-area-inset-top); }
+      .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+    }
+    body {
+      min-height: 100dvh;
+      font-family: 'Inter', sans-serif;
+    }
+    h1, h2, h3, .font-headline {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+  </style>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+</head>
+<body class="bg-surface text-on-surface pt-safe pb-safe">
+<main class="flex flex-col min-h-screen pb-20">
+<!-- Top Section: Clean Professional Profile Header -->
+<div class="bg-surface-container-lowest px-margin-page pt-12 pb-stack-lg flex flex-col items-center">
+<!-- Large Avatar Placeholder -->
+<div class="w-24 h-24 rounded-full bg-surface-variant flex items-center justify-center mb-stack-md shadow-sm">
+<span class="material-symbols-outlined text-outline text-[48px]" style="font-variation-settings: &quot;FILL&quot; 1;">account_circle</span>
+</div>
+<div class="text-center mb-stack-lg">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Welcome to City Express</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">登录开启您的高效配送之旅</p>
+</div>
+<!-- Prominent Login Button -->
+<button class="w-full max-w-[280px] bg-primary text-on-primary py-3.5 rounded-full font-headline-sm text-headline-sm shadow-lg shadow-primary/20 active:scale-[0.97] transition-all" id="login-btn">
+        登录 / 注册
+      </button>
+</div>
+<!-- Quick Stats Placeholder (Inactive state) -->
+<div class="px-margin-page -mt-4 mb-stack-md">
+<div class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/30 flex divide-x divide-outline-variant/20 py-stack-md">
+<div class="flex-1 flex flex-col items-center opacity-40">
+<span class="font-headline-sm text-on-surface">--</span>
+<span class="font-label-md text-on-surface-variant">今日单数</span>
+</div>
+<div class="flex-1 flex flex-col items-center opacity-40">
+<span class="font-headline-sm text-on-surface">--</span>
+<span class="font-label-md text-on-surface-variant">预计收益</span>
+</div>
+</div>
+</div>
+<!-- Utilities Section -->
+<div class="px-margin-page space-y-stack-md">
+<div class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/30 overflow-hidden">
+<!-- Help Center -->
+<div class="flex items-center justify-between p-stack-md active:bg-surface-container transition-colors cursor-pointer group">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[22px]">help_center</span>
+</div>
+<span class="font-body-lg text-body-lg text-on-surface font-medium">帮助中心</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-active:translate-x-1 transition-transform">chevron_right</span>
+</div>
+<div class="h-[1px] bg-outline-variant/20 mx-stack-md"></div>
+<!-- Feedback -->
+<div class="flex items-center justify-between p-stack-md active:bg-surface-container transition-colors cursor-pointer group">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[22px]">chat_bubble</span>
+</div>
+<span class="font-body-lg text-body-lg text-on-surface font-medium">意见反馈</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-active:translate-x-1 transition-transform">chevron_right</span>
+</div>
+<div class="h-[1px] bg-outline-variant/20 mx-stack-md"></div>
+<!-- About Us -->
+<div class="flex items-center justify-between p-stack-md active:bg-surface-container transition-colors cursor-pointer group">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[22px]">info</span>
+</div>
+<span class="font-body-lg text-body-lg text-on-surface font-medium">关于我们</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-active:translate-x-1 transition-transform">chevron_right</span>
+</div>
+<div class="h-[1px] bg-outline-variant/20 mx-stack-md"></div>
+<!-- Settings -->
+<div class="flex items-center justify-between p-stack-md active:bg-surface-container transition-colors cursor-pointer group">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[22px]">settings</span>
+</div>
+<span class="font-body-lg text-body-lg text-on-surface font-medium">系统设置</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-active:translate-x-1 transition-transform">chevron_right</span>
+</div>
+</div>
+</div>
+<!-- Mascot & Version Footer -->
+<div class="mt-auto py-stack-lg px-margin-page flex flex-col items-center">
+<div class="w-20 h-20 mb-stack-sm opacity-20 grayscale">
+<img alt="Delivery Robot" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHf2UasUaNgQA4KdU5XPIyGS2i0OZPjYuEeHSEP-EggiX_8FyJ7DuS8ISNXBKIV7KEQ3spbyY8cwrx6oNtaCXbXZ2V3BGg5T4e263VbkHWz7dINNeeStkfTaFt7-yW4T0Klo1LDDKAWRVaqbUpj8W0SERAzoWen2jrufJMkPG1ZzRRUWYh3OgWebhUh0_UWa0p2ETQ-EXaQDGnzyx1T9WSiGF4qPM8OsTh0HEV0mzbzI_M1-EcZA157TaDlpIH2LgYgXFZ4beO9iUT">
+</div>
+<p class="font-label-md text-label-md text-outline mb-1 opacity-60">骑士配送端 v4.2.0</p>
+<p class="font-label-md text-[10px] text-outline-variant uppercase tracking-widest opacity-40">© 2024 CITY EXPRESS LOGISTICS INC.</p>
+</div>
+</main>
+<script>
+    // Interaction feedback for the login button
+    document.getElementById('login-btn').addEventListener('click', function() {
+      console.log('Navigating to login...');
+      this.classList.add('opacity-90');
+      setTimeout(() => this.classList.remove('opacity-90'), 200);
+    });
+
+    // Ripple effect for list items
+    document.querySelectorAll('.group').forEach(item => {
+      item.addEventListener('click', function() {
+        const ripple = document.createElement('div');
+        ripple.className = 'absolute inset-0 bg-primary/5 pointer-events-none transition-opacity duration-300';
+        this.style.position = 'relative';
+        this.appendChild(ripple);
+        setTimeout(() => ripple.style.opacity = '0', 300);
+        setTimeout(() => ripple.remove(), 600);
+      });
+    });
+  </script>
+
+
+<nav class="fixed bottom-0 w-full z-50 bg-surface/80 backdrop-blur-xl pb-safe shadow-[0_-1px_8px_rgba(0,0,0,0.04)]" data-active-classes="text-primary"><div class="h-16 flex items-center justify-around"><a class="flex flex-col items-center justify-center gap-1 flex-1 text-on-surface-variant" data-path="grab-orders" href="#"><span class="material-symbols-outlined">task</span><span class="font-label-md text-label-md">抢单</span></a><a class="flex flex-col items-center justify-center gap-1 flex-1 text-on-surface-variant" data-path="orders" href="#"><span class="material-symbols-outlined">receipt_long</span><span class="font-label-md text-label-md">订单</span></a><a class="flex flex-col items-center justify-center gap-1 flex-1 text-primary" data-path="profile" href="#"><span class="material-symbols-outlined">account_circle</span><span class="font-label-md text-label-md">我的</span></a></div></nav>
+
+</body></html>
