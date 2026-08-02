@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>订单详情 - 跑腿代办</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Plus+Jakarta+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary": "#ffffff",
+                        "outline-variant": "#c2c6d8",
+                        "on-primary-fixed": "#001849",
+                        "outline": "#727687",
+                        "surface-bright": "#f8f9ff",
+                        "primary-fixed": "#dae1ff",
+                        "primary-fixed-dim": "#b3c5ff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#f6f8fa",
+                        "on-surface-variant": "#424656",
+                        "tertiary-fixed": "#e0e3e5",
+                        "on-surface": "#0b1c30",
+                        "primary": "#0050cb",
+                        "surface-tint": "#0054d6",
+                        "surface-container-low": "#eff4ff",
+                        "on-secondary": "#ffffff",
+                        "secondary": "#515f74",
+                        "surface-container-high": "#dce9ff",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed-dim": "#b9c7e0",
+                        "surface": "#f8f9ff",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed-variant": "#3a485c",
+                        "inverse-primary": "#b3c5ff",
+                        "surface-container-highest": "#d3e4fe",
+                        "primary-container": "#0066ff",
+                        "tertiary-fixed-dim": "#c4c7c9",
+                        "inverse-surface": "#213145",
+                        "on-tertiary-fixed": "#191c1e",
+                        "tertiary-container": "#6f7274",
+                        "background": "#f8f9ff",
+                        "on-tertiary-fixed-variant": "#444749",
+                        "tertiary": "#565a5b",
+                        "error-container": "#ffdad6",
+                        "secondary-container": "#d5e3fd",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#cbdbf5",
+                        "secondary-fixed": "#d5e3fd",
+                        "surface-variant": "#d3e4fe",
+                        "on-primary-fixed-variant": "#003fa4",
+                        "on-primary-container": "#f8f7ff",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed": "#0d1c2f",
+                        "on-background": "#0b1c30",
+                        "on-secondary-container": "#57657b",
+                        "surface-container": "#e5eeff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-md": "16px",
+                        "base": "4px",
+                        "stack-sm": "8px",
+                        "margin-page": "16px",
+                        "gutter-grid": "12px",
+                        "stack-lg": "24px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "body-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-sm": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["22px", {"lineHeight": "28px", "fontWeight": "700"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "headline-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "headline-lg": ["24px", {"lineHeight": "32px", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background font-body-md text-on-background min-h-screen">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface border-b border-outline-variant flex justify-between items-center px-margin-page h-14">
+<div class="flex items-center gap-2">
+<button class="active:scale-95 duration-150 p-1 hover:bg-primary-container/10 rounded-full">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md-mobile text-primary">订单详情</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary">help_outline</span>
+<span class="material-symbols-outlined text-primary">share</span>
+</div>
+</header>
+<main class="pt-20 pb-32 px-margin-page max-w-md mx-auto">
+<!-- Status Header Card -->
+<section class="mb-stack-lg animate-in fade-in slide-in-from-top-4 duration-500">
+<div class="bg-primary-container text-on-primary-container p-6 rounded-xl shadow-lg flex items-center justify-between">
+<div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile mb-1">已送达</h2>
+<p class="font-body-md text-on-primary-container/80">感谢您使用跑腿服务，期待再次为您服务</p>
+</div>
+<div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+<span class="material-symbols-outlined text-white text-4xl" style="font-variation-settings: 'FILL' 1;">task_alt</span>
+</div>
+</div>
+</section>
+<!-- Delivery Photo Preview (Static) -->
+<section class="mb-stack-lg">
+<h3 class="font-headline-sm text-headline-sm mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">photo_camera</span>
+                送达拍照
+            </h3>
+<div class="relative group cursor-pointer overflow-hidden rounded-xl border border-outline-variant bg-white aspect-video flex items-center justify-center">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105" data-alt="A professional clear photo showing a delivery package placed securely on a clean doorstep. The lighting is bright and natural, suggesting a safe delivery in a modern urban apartment corridor. The overall tone is reliable and official, with sharp focus and clean composition." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCdl14BsThV-dTdEwoYFUvH1uudQv9qhHvujM6SkVHpSjJ_dYaOaEcgvGPJan5FpCFQSMiwass2ssdoW6jr49sXBazWOm8dr_8nB2s_D4ZvNXycRubeMrIA7qFUfDUvfQIpPa1J9Hi_BGeZBSzBymCtb_g2a9W9W-xayFziAwBN4TGxtCLV1MX5v1Bq_No-uJx_x26pvo3yTio_J8dWPEecFDMKZ0Ok50ap0TiXAKGET520Y3etJVD9CJ-h4LM0QgL92lDWFT5H')">
+</div>
+<div class="absolute inset-0 bg-black/10"></div>
+<div class="absolute bottom-3 right-3 bg-black/60 text-white px-3 py-1 rounded-full text-label-md flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">zoom_in</span>
+                    查看原图
+                </div>
+</div>
+</section>
+<!-- Order Information Card (Bento Style) -->
+<div class="grid grid-cols-1 gap-4 mb-stack-lg">
+<!-- Order Details -->
+<div class="bg-white p-5 rounded-xl border border-outline-variant shadow-[0px_4px_12px_rgba(0,0,0,0.05)]">
+<div class="flex justify-between items-center mb-4">
+<span class="font-headline-sm text-headline-sm text-on-surface">服务明细</span>
+<span class="text-label-md px-2 py-1 bg-secondary-container text-on-secondary-container rounded-lg">代买代办</span>
+</div>
+<div class="space-y-4">
+<div class="flex gap-3">
+<div class="flex flex-col items-center">
+<div class="w-2 h-2 bg-primary rounded-full"></div>
+<div class="w-[1px] h-full border-l border-dashed border-outline-variant my-1"></div>
+</div>
+<div class="flex-1 -mt-1">
+<p class="font-label-md text-outline">取货点</p>
+<p class="font-body-md text-on-surface">朝阳区三里屯路 19 号院 1 号楼</p>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="flex flex-col items-center">
+<div class="w-2 h-2 bg-error rounded-full"></div>
+</div>
+<div class="flex-1 -mt-1">
+<p class="font-label-md text-outline">送达点</p>
+<p class="font-body-md text-on-surface">海淀区中关村大街 27 号</p>
+</div>
+</div>
+</div>
+<div class="mt-6 pt-4 border-t border-outline-variant grid grid-cols-2 gap-4">
+<div>
+<p class="text-label-md text-outline">订单编号</p>
+<p class="font-body-md text-on-surface">RT202310240982</p>
+</div>
+<div>
+<p class="text-label-md text-outline">下单时间</p>
+<p class="font-body-md text-on-surface">2023-10-24 14:30</p>
+</div>
+</div>
+</div>
+<!-- Pricing Details -->
+<div class="bg-white p-5 rounded-xl border border-outline-variant shadow-[0px_4px_12px_rgba(0,0,0,0.05)]">
+<h3 class="font-headline-sm text-headline-sm mb-4">费用明细</h3>
+<div class="space-y-3">
+<div class="flex justify-between items-center">
+<span class="text-body-md text-on-surface-variant">基础配送费</span>
+<span class="text-body-md text-on-surface font-medium">¥ 12.00</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-body-md text-on-surface-variant">距离附加费 (8.5km)</span>
+<span class="text-body-md text-on-surface font-medium">¥ 8.50</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-body-md text-on-surface-variant">夜间附加费</span>
+<span class="text-body-md text-on-surface font-medium">¥ 5.00</span>
+</div>
+<div class="flex justify-between items-center text-primary">
+<span class="text-body-md">优惠券减免</span>
+<span class="text-body-md font-medium">- ¥ 2.00</span>
+</div>
+<div class="pt-3 border-t border-outline-variant flex justify-between items-center">
+<span class="font-headline-sm text-on-surface">实付款</span>
+<span class="font-headline-lg text-primary">¥ 23.50</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Errand Boy Info -->
+<div class="bg-surface-container-low p-4 rounded-xl flex items-center justify-between border border-outline-variant/30 mb-stack-lg">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full overflow-hidden border-2 border-white">
+<img class="w-full h-full object-cover" data-alt="A professional portrait of a delivery person in their late 20s, smiling warmly, wearing a neat corporate blue uniform for a delivery service. The background is a soft-focus urban setting. The overall feel is trustworthy and friendly, reflecting excellent service standards." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBV-96Lil83-jNgg4zpuOqkOfQHISX3WQoLH_VOMCVyFoxNu-H3ljyE3uqwq6hfJgkre7RNFAp2TbwCqEyyep8zhsLVQ7xirqD3M9adCZWgm30sCQ3Wsjm7zGi0cbob-qk-pX9MzKF5pIlHvYQ-6YL6bztDIDzivSM3tLRrii4mzyX3m-lQMozRliMmry55Sj0OWt9kdwB5_uhZnzM3-qbN1UzRJVZIm0gRplpiGpeScCjg2o-4DMVGJhTaMjcOh85pHYoGY30A"/>
+</div>
+<div>
+<div class="flex items-center gap-1">
+<span class="font-body-lg font-bold">王师傅</span>
+<span class="text-[10px] bg-primary-container text-on-primary-container px-1.5 rounded">金牌骑手</span>
+</div>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-md">4.9 (已服务 2k+)</span>
+</div>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-primary shadow-sm active:scale-90 transition-transform">
+<span class="material-symbols-outlined">call</span>
+</button>
+<button class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-primary shadow-sm active:scale-90 transition-transform">
+<span class="material-symbols-outlined">chat</span>
+</button>
+</div>
+</div>
+</main>
+<!-- Bottom Action Bar -->
+<footer class="fixed bottom-0 w-full bg-surface-container-lowest border-t border-outline-variant pb-safe z-50">
+<div class="flex justify-between items-center px-margin-page h-20 gap-3">
+<button class="flex-1 h-12 rounded-xl border border-primary text-primary font-body-lg font-bold hover:bg-primary/5 active:scale-95 transition-all">
+                再来一单
+            </button>
+<button class="flex-1 h-12 rounded-xl bg-primary text-on-primary font-body-lg font-bold shadow-lg shadow-primary/20 active:scale-95 transition-all flex items-center justify-center gap-2" id="rateBtn">
+<span class="material-symbols-outlined">star_rate</span>
+                去评价
+            </button>
+</div>
+</footer>
+<!-- Simple Interaction Logic -->
+<script>
+        document.getElementById('rateBtn').addEventListener('click', function() {
+            this.innerHTML = '<span class="material-symbols-outlined animate-spin">progress_activity</span> 正在跳转...';
+            setTimeout(() => {
+                alert('跳转至评价页面');
+                this.innerHTML = '<span class="material-symbols-outlined">star_rate</span> 去评价';
+            }, 800);
+        });
+
+        // Simple scroll appearance for top bar
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('shadow-md');
+            } else {
+                header.classList.remove('shadow-md');
+            }
+        });
+    </script>
+</body></html>

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>订单详情 - 跑腿代办</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary": "#ffffff",
+                    "outline-variant": "#c2c6d8",
+                    "on-primary-fixed": "#001849",
+                    "outline": "#727687",
+                    "surface-bright": "#f8f9ff",
+                    "primary-fixed": "#dae1ff",
+                    "primary-fixed-dim": "#b3c5ff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-container": "#f6f8fa",
+                    "on-surface-variant": "#424656",
+                    "tertiary-fixed": "#e0e3e5",
+                    "on-surface": "#0b1c30",
+                    "primary": "#0050cb",
+                    "surface-tint": "#0054d6",
+                    "surface-container-low": "#eff4ff",
+                    "on-secondary": "#ffffff",
+                    "secondary": "#515f74",
+                    "surface-container-high": "#dce9ff",
+                    "on-error-container": "#93000a",
+                    "secondary-fixed-dim": "#b9c7e0",
+                    "surface": "#f8f9ff",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-fixed-variant": "#3a485c",
+                    "inverse-primary": "#b3c5ff",
+                    "surface-on-surface": "#213145",
+                    "inverse-surface": "#213145",
+                    "on-tertiary-fixed": "#191c1e",
+                    "tertiary-container": "#6f7274",
+                    "background": "#f8f9ff",
+                    "on-tertiary-fixed-variant": "#444749",
+                    "tertiary": "#565a5b",
+                    "error-container": "#ffdad6",
+                    "secondary-container": "#d5e3fd",
+                    "on-error": "#ffffff",
+                    "surface-dim": "#cbdbf5",
+                    "secondary-fixed": "#d5e3fd",
+                    "surface-variant": "#d3e4fe",
+                    "on-primary-fixed-variant": "#003fa4",
+                    "on-primary-container": "#f8f7ff",
+                    "error": "#ba1a1a",
+                    "on-secondary-fixed": "#0d1c2f",
+                    "on-background": "#0b1c30",
+                    "on-secondary-container": "#57657b",
+                    "surface-container": "#e5eeff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-md": "16px",
+                    "base": "4px",
+                    "stack-sm": "8px",
+                    "margin-page": "16px",
+                    "gutter-grid": "12px",
+                    "stack-lg": "24px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "headline-lg-mobile": ["Plus Jakarta Sans"],
+                    "body-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-sm": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["22px", {"lineHeight": "28px", "fontWeight": "700"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "headline-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "headline-lg": ["24px", {"lineHeight": "32px", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { background-color: #F8FAFC; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .step-line::before {
+            content: '';
+            position: absolute;
+            left: 11px;
+            top: 24px;
+            bottom: -8px;
+            width: 2px;
+            background: #E2E8F0;
+        }
+        .step-line-active::before {
+            background: #0066FF;
+        }
+        .step-line-last::before {
+            display: none;
+        }
+        @keyframes pulse-soft {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+        .animate-pulse-soft { animation: pulse-soft 2s infinite ease-in-out; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-on-background">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 bg-surface border-b border-outline-variant flex justify-between items-center px-margin-page h-14">
+<div class="flex items-center gap-3">
+<button class="p-2 -ml-2 active:scale-95 duration-150 hover:bg-primary-container/10 rounded-full">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md-mobile text-primary font-bold">订单详情</h1>
+</div>
+<div class="flex gap-2">
+<button class="p-2 hover:bg-primary-container/10 rounded-full active:scale-95 duration-150">
+<span class="material-symbols-outlined text-on-surface-variant">share</span>
+</button>
+<button class="p-2 hover:bg-primary-container/10 rounded-full active:scale-95 duration-150">
+<span class="material-symbols-outlined text-on-surface-variant">more_vert</span>
+</button>
+</div>
+</header>
+<main class="pt-14 pb-32 px-margin-page max-w-md mx-auto space-y-stack-md">
+<!-- Status Card -->
+<div class="mt-stack-md bg-primary-container text-on-primary-container p-stack-lg rounded-xl shadow-lg relative overflow-hidden">
+<div class="relative z-10">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-[20px] animate-pulse">directions_run</span>
+<span class="font-label-md text-label-md opacity-90">订单配送中</span>
+</div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile mb-base">预计 14:35 送达</h2>
+<p class="font-body-md text-body-md opacity-80">骑手正在全速赶往目的地</p>
+</div>
+<!-- Decorative circle -->
+<div class="absolute -right-8 -top-8 w-32 h-32 bg-white/10 rounded-full blur-3xl"></div>
+</div>
+<!-- Real-time Map -->
+<section class="bg-white rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-[#E2E8F0] overflow-hidden">
+<div class="h-48 w-full relative">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="A high-quality simplified vector map of a clean urban grid layout in a corporate blue and grey color scheme. The map shows a clear route line in vibrant blue, with a rider icon positioned halfway between a store and a residential building. The aesthetic is professional, minimalist, and functional, with soft shadows and high-contrast labels for key landmarks." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDp6-Aoqpvrl0vMAzdHGeb6LL0BLZ0Dz9RZeX0DAbsCMSahGSHugcyMNl2AiP-p_wcaVFbnxcaHCHNbAGc4qdYh3dN-_cJxIdk9PB5BixNLRkUEfYzYNRixsxiQtej0BAGYE3vwfNiL9FFFKs5r7X7Y5c7EiwRTwGEzVfWZsJQGRG1yb5gkYku5uZaVDvzi8JLXRes_ibv_AKIDz5N2ZuyjCTaShmX5wieGgMFwaAyDXN-54YzCB9PAXrJLNdWMP9g2NUFOPaQ4')"></div>
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="bg-primary text-white p-2 rounded-full shadow-lg animate-bounce">
+<span class="material-symbols-outlined">delivery_dining</span>
+</div>
+</div>
+<div class="absolute bottom-3 right-3 bg-white px-3 py-1.5 rounded-full shadow-md flex items-center gap-1.5 border border-outline-variant">
+<span class="material-symbols-outlined text-[16px] text-primary">navigation</span>
+<span class="font-label-md text-label-md text-on-surface">实时位置</span>
+</div>
+</div>
+<div class="hidden" data-location="Shanghai, China" style=""></div>
+</section>
+<!-- Rider Profile -->
+<section class="bg-white rounded-xl p-stack-md shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-[#E2E8F0]">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-stack-md">
+<div class="w-14 h-14 rounded-full overflow-hidden border-2 border-primary-container">
+<img class="w-full h-full object-cover" data-alt="A professional, friendly headshot of a delivery courier wearing a clean blue polo shirt and a branded cap. He is smiling warmly against a soft-focus urban background. The lighting is bright and optimistic, emphasizing trust and reliability. Corporate photography style with natural skin tones and vibrant primary blue accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzxo5LiWZTuDg5ucorm3Jfxr-gWaAba8nIOcGMBEBlXqytoh8VQtanvEjqBF_MJyK5yWMdxRAIywForGeDXn5eZx29HV-KY7mb9ux1WnX5RImmymcx1ejh6QKPnb16_c8mq7IfIdQPq-lShQr_o6UrJnn8pOKJ5Pt7VVXGchrkIbx4CrThgJPBWk_XbkHzKTeg3uV9xN3p1H-qcW8WSMAm7UP-pNxiyT2alMH5mMWwl3X_9gNyP-TgPZVdtLAWzzxTAyQ4hBg6"/>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">张大伟</h3>
+<span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded-full text-[10px] font-bold">金牌骑手</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant mt-0.5">
+<span class="material-symbols-outlined text-[16px] text-yellow-500" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-md text-label-md">4.9 分</span>
+<span class="mx-1 opacity-30">|</span>
+<span class="font-label-md text-label-md">配送 2541 单</span>
+</div>
+</div>
+</div>
+<div class="flex gap-2">
+<a class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary hover:bg-primary/10 active:scale-90 transition-all" href="tel:123456789">
+<span class="material-symbols-outlined">call</span>
+</a>
+<button class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary hover:bg-primary/10 active:scale-90 transition-all">
+<span class="material-symbols-outlined">chat</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Order Progress Timeline -->
+<section class="bg-white rounded-xl p-stack-md shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-[#E2E8F0]">
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-stack-md">订单进度</h3>
+<div class="space-y-6">
+<!-- Step 1 -->
+<div class="relative flex gap-4 step-line step-line-active">
+<div class="z-10 w-6 h-6 rounded-full bg-primary flex items-center justify-center text-white shrink-0">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<div>
+<p class="font-body-md text-body-md text-on-surface font-semibold">商家已接单</p>
+<p class="text-[12px] text-outline mt-0.5">14:05</p>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="relative flex gap-4 step-line step-line-active">
+<div class="z-10 w-6 h-6 rounded-full bg-primary flex items-center justify-center text-white shrink-0">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<div>
+<p class="font-body-md text-body-md text-on-surface font-semibold">骑手已取货</p>
+<p class="text-[12px] text-outline mt-0.5">14:18</p>
+</div>
+</div>
+<!-- Step 3 (Current) -->
+<div class="relative flex gap-4 step-line">
+<div class="z-10 w-6 h-6 rounded-full bg-primary ring-4 ring-primary-container/30 flex items-center justify-center text-white shrink-0">
+<div class="w-2.5 h-2.5 bg-white rounded-full animate-pulse"></div>
+</div>
+<div>
+<p class="font-body-md text-body-md text-primary font-bold">配送中</p>
+<p class="text-[12px] text-primary/70 mt-0.5">骑手距离您 1.2 km</p>
+</div>
+</div>
+<!-- Step 4 -->
+<div class="relative flex gap-4 step-line-last">
+<div class="z-10 w-6 h-6 rounded-full bg-surface-container-highest border border-outline-variant flex items-center justify-center text-outline shrink-0">
+</div>
+<div>
+<p class="font-body-md text-body-md text-outline">已送达</p>
+<p class="text-[12px] text-outline mt-0.5">预计 14:35</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Item & Address Details -->
+<section class="bg-white rounded-xl p-stack-md shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-[#E2E8F0]">
+<div class="flex items-start gap-3 mb-stack-md border-b border-outline-variant pb-stack-md">
+<span class="material-symbols-outlined text-primary mt-1">inventory_2</span>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">物品信息</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">办公文档 × 1 (约0.5kg)</p>
+<p class="text-label-md text-outline mt-1">备注：请务必本人签收，急件。</p>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex gap-3">
+<span class="material-symbols-outlined text-secondary text-[20px]">location_on</span>
+<div>
+<p class="text-label-md text-outline">取货地址</p>
+<p class="font-body-md text-body-md text-on-surface">静安区南京西路 1266 号恒隆广场</p>
+</div>
+</div>
+<div class="flex gap-3">
+<span class="material-symbols-outlined text-primary text-[20px]">trip_origin</span>
+<div>
+<p class="text-label-md text-outline">送货地址</p>
+<p class="font-body-md text-body-md text-on-surface font-semibold">徐汇区斜土路 2899 号光启城写字楼 15 层</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Fee Details -->
+<section class="bg-white rounded-xl p-stack-md shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-[#E2E8F0]">
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-stack-md">费用明细</h3>
+<div class="space-y-3">
+<div class="flex justify-between text-body-md">
+<span class="text-on-surface-variant">基础配送费</span>
+<span class="text-on-surface">¥15.00</span>
+</div>
+<div class="flex justify-between text-body-md">
+<span class="text-on-surface-variant">里程溢价 (5.2km)</span>
+<span class="text-on-surface">¥6.50</span>
+</div>
+<div class="flex justify-between text-body-md">
+<span class="text-on-surface-variant">重量补贴</span>
+<span class="text-on-surface">¥2.00</span>
+</div>
+<div class="flex justify-between text-body-md">
+<span class="text-on-surface-variant">优惠券减免</span>
+<span class="text-error">-¥5.00</span>
+</div>
+<div class="pt-3 border-t border-outline-variant flex justify-between items-center">
+<span class="font-bold text-on-surface">实付款</span>
+<span class="text-headline-md font-bold text-primary">¥18.50</span>
+</div>
+</div>
+</section>
+<!-- Order ID & Footer -->
+<footer class="text-center py-stack-md">
+<p class="text-label-md text-outline">订单编号: 2024052045928102</p>
+<p class="text-label-md text-outline mt-1">下单时间: 2024-05-20 14:02:15</p>
+</footer>
+</main>
+<!-- Bottom Actions -->
+<div class="fixed bottom-0 w-full bg-white border-t border-outline-variant px-margin-page pt-3 pb-safe z-50 shadow-[0px_-4px_12px_rgba(0,0,0,0.05)]">
+<div class="flex gap-gutter-grid max-w-md mx-auto">
+<button class="flex-1 h-12 rounded-xl border border-outline text-on-surface-variant font-bold text-body-lg active:scale-95 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">help_center</span>
+                客服帮助
+            </button>
+<button class="flex-[1.5] h-12 rounded-xl bg-primary text-on-primary font-bold text-body-lg shadow-lg active:scale-95 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">phone_in_talk</span>
+                联系骑手
+            </button>
+</div>
+</div>
+<!-- Micro-interaction Script -->
+<script>
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const icon = this.querySelector('.material-symbols-outlined');
+                if (icon) {
+                    icon.style.transform = 'rotate(15deg)';
+                    setTimeout(() => icon.style.transform = '', 150);
+                }
+            });
+        });
+
+        // Simulating minor status update pulses
+        setInterval(() => {
+            const status = document.querySelector('.animate-pulse');
+            if (status) {
+                status.classList.remove('animate-pulse');
+                void status.offsetWidth; // trigger reflow
+                status.classList.add('animate-pulse');
+            }
+        }, 3000);
+    </script>
+</body></html>

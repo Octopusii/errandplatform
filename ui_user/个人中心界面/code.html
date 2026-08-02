@@ -1,0 +1,274 @@
+<!DOCTYPE html><html class="light" lang="zh-CN"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
+<title>个人中心 - 同城跑腿</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed-dim": "#b3c5ff",
+                    "on-tertiary-container": "#f6f8fa",
+                    "on-tertiary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "on-surface": "#0b1c30",
+                    "outline": "#727687",
+                    "on-error": "#ffffff",
+                    "surface-variant": "#d3e4fe",
+                    "on-background": "#0b1c30",
+                    "on-primary-fixed-variant": "#003fa4",
+                    "primary-container": "#0066ff",
+                    "on-secondary-fixed-variant": "#3a485c",
+                    "tertiary": "#565a5b",
+                    "tertiary-container": "#6f7274",
+                    "inverse-primary": "#b3c5ff",
+                    "error": "#ba1a1a",
+                    "inverse-on-surface": "#eaf1ff",
+                    "on-tertiary-fixed-variant": "#444749",
+                    "secondary-fixed-dim": "#b9c7e0",
+                    "on-primary-fixed": "#001849",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-high": "#dce9ff",
+                    "surface-container-low": "#eff4ff",
+                    "outline-variant": "#c2c6d8",
+                    "surface-container-highest": "#d3e4fe",
+                    "on-secondary-fixed": "#0d1c2f",
+                    "tertiary-fixed-dim": "#c4c7c9",
+                    "surface-bright": "#f8f9ff",
+                    "primary-fixed": "#dae1ff",
+                    "surface-tint": "#0054d6",
+                    "on-secondary-container": "#57657b",
+                    "on-primary-container": "#f8f7ff",
+                    "primary": "#0050cb",
+                    "error-container": "#ffdad6",
+                    "surface-container": "#e5eeff",
+                    "secondary-fixed": "#d5e3fd",
+                    "background": "#f8f9ff",
+                    "surface-dim": "#cbdbf5",
+                    "surface": "#f8f9ff",
+                    "on-primary": "#ffffff",
+                    "on-surface-variant": "#424656",
+                    "inverse-surface": "#213145",
+                    "secondary": "#515f74",
+                    "on-tertiary-fixed": "#191c1e",
+                    "secondary-container": "#d5e3fd",
+                    "on-secondary": "#ffffff",
+                    "tertiary-fixed": "#e0e3e5"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter-grid": "12px",
+                    "stack-lg": "24px",
+                    "stack-md": "16px",
+                    "margin-page": "16px",
+                    "base": "4px",
+                    "stack-sm": "8px"
+            },
+            "fontFamily": {
+                    "label-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-sm": ["Plus Jakarta Sans"],
+                    "body-lg": ["Inter"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "headline-lg-mobile": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["22px", {"lineHeight": "28px", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #F8FAFC;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .card-shadow {
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex flex-col min-h-screen text-on-background" data-mode="connect">
+<!-- Top AppBar -->
+<header class="bg-surface dark:bg-surface-dim shadow-sm w-full sticky top-0 z-50">
+<div class="flex items-center justify-between px-margin-page h-14 w-full">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim" style="font-variation-settings: 'FILL' 1;">speed</span>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary dark:text-primary-fixed-dim">同城跑腿</h1>
+</div>
+<button class="hover:bg-surface-container-low transition-colors p-2 rounded-full active:opacity-80">
+<span class="material-symbols-outlined text-on-surface-variant">settings</span>
+</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow px-margin-page py-stack-md space-y-stack-md pb-24">
+<!-- User Info Card -->
+<section class="bg-white rounded-xl card-shadow p-stack-md border border-outline-variant flex items-center gap-4 relative overflow-hidden">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-primary/5 rounded-full blur-2xl"></div>
+<div class="w-16 h-16 rounded-full border-2 border-primary/10 overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="A professional, friendly studio portrait of a young adult Asian male with a warm smile, wearing a clean, modern navy blue polo shirt. The lighting is bright and high-key, with a soft-focus office background that emphasizes a clean and trustworthy corporate aesthetic. The colors are dominated by soft whites and professional safety blues." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCQe2BMwGGm1_yjqUl0y0DPuT8Hi1nUCtkeVschYPGFT4f0XvAJ4CrzqV-tp2fgNvfa5y98M5bGMw9d2SA_rF0F1US5OxXbTB-CyEvYaXqUJIFmCevwO1KAjNWCxEysfY4tf0CCU5N4CexuAW1nwHQeDf5QD2nluq-ZVln78kijJrcnXGH9Q7EX-DglTw-4ITlDUlZP7dwWCIoYfD_6DaLtd4JgHSQFlwOrGbwClxRQpz8XHpv-_O1__ej4NkKIdSFCAcbIMVm">
+</div>
+<div class="flex flex-col">
+<h2 class="font-headline-md text-headline-md text-on-surface">张大伟</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">138 **** 8888</p>
+<div class="flex items-center mt-1">
+<span class="bg-primary/10 text-primary text-[10px] px-2 py-0.5 rounded-full font-bold">黄金会员</span>
+</div>
+</div>
+<button class="ml-auto text-primary p-2 active:scale-95 transition-transform">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</section>
+<!-- Balance / Coupon / Points Bento Grid -->
+<section class="grid grid-cols-3 gap-gutter-grid">
+<div class="bg-white rounded-xl card-shadow p-stack-sm flex flex-col items-center justify-center border border-outline-variant hover:bg-surface-container-low transition-colors cursor-pointer">
+<span class="font-headline-sm text-headline-sm text-primary">¥248.50</span>
+<span class="font-label-md text-label-md text-on-surface-variant mt-1">余额</span>
+</div>
+<div class="bg-white rounded-xl card-shadow p-stack-sm flex flex-col items-center justify-center border border-outline-variant hover:bg-surface-container-low transition-colors cursor-pointer">
+<span class="font-headline-sm text-headline-sm text-primary">6</span>
+<span class="font-label-md text-label-md text-on-surface-variant mt-1">优惠券</span>
+</div>
+<div class="bg-white rounded-xl card-shadow p-stack-sm flex flex-col items-center justify-center border border-outline-variant hover:bg-surface-container-low transition-colors cursor-pointer">
+<span class="font-headline-sm text-headline-sm text-primary">1,240</span>
+<span class="font-label-md text-label-md text-on-surface-variant mt-1">积分</span>
+</div>
+</section>
+<!-- Promotion Banner (Optional but adds value) -->
+<div class="w-full h-24 rounded-xl overflow-hidden relative card-shadow border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A clean, minimalist vector-style promotional banner for an errand service. It features stylized icons of a package being delivered quickly in a safe, secure manner. The color palette uses professional navy blue, bright cyan, and clean whites. The overall lighting is bright and cheerful, evoking a sense of corporate efficiency and trust." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_Add-06Sj7wPl6aERjCTN8OyaBaGCUv7NYd-WKRsJEsO9l71iQd2Y6vJ9tGiKytUdkgFdsJ5kRW4UcFq0jrB0MkTpWK5IEKb01uQ-2ke70opQkOYADIt-UHhJqEa7LTo74c7K504EWqVoD7QSvYyfxUJ5_b1fLTsRTrQsOf6o_Jf9aeBt3SGUqoPQ2LR8XxZ0FmizXE2aLhO94QygnTY4iRItYw_OmvsFYFFcUKt63PhdHG1p5RQBaurqRuQnQCZ5G4dP3wML">
+<div class="absolute inset-0 bg-gradient-to-r from-primary/60 to-transparent flex items-center px-6">
+<div class="text-white">
+<div class="font-headline-sm text-headline-sm">新客专享礼</div>
+<div class="font-label-md text-label-md opacity-90">分享立得5元跑腿红包</div>
+</div>
+</div>
+</div>
+<!-- Menu List Group -->
+<section class="bg-white rounded-xl card-shadow border border-outline-variant overflow-hidden">
+<div class="divide-y divide-outline-variant">
+<button class="w-full flex items-center justify-between p-4 hover:bg-surface-container-low active:bg-surface-container transition-colors">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary bg-primary/5 p-2 rounded-lg">location_on</span>
+<span class="font-body-lg text-body-lg text-on-surface">地址管理</span>
+</div>
+<span class="material-symbols-outlined text-outline text-sm">chevron_right</span>
+</button>
+<button class="w-full flex items-center justify-between p-4 hover:bg-surface-container-low active:bg-surface-container transition-colors">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary bg-primary/5 p-2 rounded-lg">confirmation_number</span>
+<span class="font-body-lg text-body-lg text-on-surface">优惠券</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-error font-label-md text-label-md">2张即将过期</span>
+<span class="material-symbols-outlined text-outline text-sm">chevron_right</span>
+</div>
+</button>
+<button class="w-full flex items-center justify-between p-4 hover:bg-surface-container-low active:bg-surface-container transition-colors">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary bg-primary/5 p-2 rounded-lg">support_agent</span>
+<span class="font-body-lg text-body-lg text-on-surface">客服中心</span>
+</div>
+<span class="material-symbols-outlined text-outline text-sm">chevron_right</span>
+</button>
+<button class="w-full flex items-center justify-between p-4 hover:bg-surface-container-low active:bg-surface-container transition-colors">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary bg-primary/5 p-2 rounded-lg">info</span>
+<span class="font-body-lg text-body-lg text-on-surface">关于我们</span>
+</div>
+<span class="material-symbols-outlined text-outline text-sm">chevron_right</span>
+</button>
+</div>
+</section>
+<!-- Logout Button -->
+<button class="w-full py-4 bg-white border border-outline-variant text-error rounded-xl card-shadow font-headline-sm text-headline-sm active:scale-[0.98] transition-transform hover:bg-error/5">
+            退出登录
+        </button>
+<!-- Version Info -->
+<div class="text-center py-4">
+<span class="font-label-md text-label-md text-outline">版本号 v2.4.0</span>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface dark:bg-inverse-surface border-t border-outline-variant dark:border-outline shadow-[0px_-2px_10px_rgba(0,0,0,0.05)]">
+<div class="flex justify-around items-center h-16 w-full"><!-- Nav Item 1 (Inactive) -->
+<button class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-low transition-all active:scale-95 duration-200">
+<span class="material-symbols-outlined">home_repair_service</span>
+<span class="font-label-md text-label-md">预约</span>
+</button>
+<!-- Nav Item 2 (Inactive) -->
+<button class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-low transition-all active:scale-95 duration-200">
+<span class="material-symbols-outlined">assignment</span>
+<span class="font-label-md text-label-md">订单</span>
+</button>
+<!-- Nav Item 3 (Active) -->
+<button class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed-dim font-bold hover:bg-surface-container-low transition-all active:scale-95 duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label-md text-label-md">我的</span>
+</button></div>
+</nav>
+<script>
+        // Simple micro-interaction for button feedback
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('touchstart', function() {
+                this.style.opacity = '0.7';
+            });
+            button.addEventListener('touchend', function() {
+                this.style.opacity = '1';
+            });
+        });
+
+        // Pull-to-refresh simulation effect (visual only)
+        let touchstartY = 0;
+        document.addEventListener('touchstart', e => {
+            touchstartY = e.touches[0].clientY;
+        });
+        document.addEventListener('touchmove', e => {
+            const touchY = e.touches[0].clientY;
+            const diff = touchY - touchstartY;
+            if (window.scrollY === 0 && diff > 50 && diff < 150) {
+                document.body.style.transform = `translateY(${diff / 3}px)`;
+            }
+        });
+        document.addEventListener('touchend', () => {
+            document.body.style.transition = 'transform 0.3s ease-out';
+            document.body.style.transform = 'translateY(0)';
+            setTimeout(() => {
+                document.body.style.transition = '';
+            }, 300);
+        });
+    </script>
+
+
+
+
+
+
+</body></html>
