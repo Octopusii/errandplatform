@@ -1,17 +1,93 @@
 {
-	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+	"pages": [
 		{
-			"path": "pages/index/index",
+			"path": "pages/grab-orders/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "抢单大厅",
+				"navigationBarBackgroundColor": "#f8f9ff",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/orders/index",
+			"style": {
+				"navigationBarTitleText": "我的订单",
+				"navigationBarBackgroundColor": "#f8f9ff",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/profile/index",
+			"style": {
+				"navigationBarTitleText": "个人中心",
+				"navigationBarBackgroundColor": "#f8f9ff",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/order-detail/send",
+			"style": {
+				"navigationBarTitleText": "订单详情",
+				"navigationBarBackgroundColor": "#f8f9ff",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/order-detail/buy",
+			"style": {
+				"navigationBarTitleText": "订单详情",
+				"navigationBarBackgroundColor": "#f8f9ff",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/order-success/index",
+			"style": {
+				"navigationBarTitleText": "抢单成功",
+				"navigationBarBackgroundColor": "#f8f9ff",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/order-executing/index",
+			"style": {
+				"navigationBarTitleText": "订单详情",
+				"navigationBarBackgroundColor": "#f8f9ff",
+				"navigationBarTextStyle": "black"
 			}
 		}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"navigationBarTitleText": "城市速递骑手端",
+		"navigationBarBackgroundColor": "#f8f9ff",
+		"backgroundColor": "#f8f9ff"
+	},
+	"tabBar": {
+		"color": "#434654",
+		"selectedColor": "#003b9a",
+		"backgroundColor": "#ffffff",
+		"borderStyle": "black",
+		"list": [
+			{
+				"pagePath": "pages/grab-orders/index",
+				"text": "抢单",
+				"iconPath": "static/icons/task.svg",
+				"selectedIconPath": "static/icons/task-active.svg"
+			},
+			{
+				"pagePath": "pages/orders/index",
+				"text": "订单",
+				"iconPath": "static/icons/receipt_long.svg",
+				"selectedIconPath": "static/icons/receipt_long-active.svg"
+			},
+			{
+				"pagePath": "pages/profile/index",
+				"text": "我的",
+				"iconPath": "static/icons/account_circle.svg",
+				"selectedIconPath": "static/icons/account_circle-active.svg"
+			}
+		]
 	},
 	"uniIdRouter": {}
 }
