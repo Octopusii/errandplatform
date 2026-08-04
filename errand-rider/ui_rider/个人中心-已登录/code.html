@@ -1,0 +1,224 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: 'class', theme: { extend: { colors: { 'tertiary-fixed': '#e0e3e4', 'secondary-container': '#d2e1fa', 'tertiary': '#3f4344', 'on-tertiary': '#ffffff', 'primary-fixed': '#dae1ff', 'secondary-fixed-dim': '#b9c7e0', 'on-tertiary-fixed-variant': '#434748', 'error-container': '#ffdad6', 'surface': '#f8f9ff', 'surface-dim': '#d9d9e4', 'background': '#faf8ff', 'on-background': '#191b23', 'tertiary-container': '#565a5b', 'on-error': '#ffffff', 'surface-tint': '#1155d0', 'on-secondary-container': '#556379', 'surface-variant': '#e1e2ec', 'on-tertiary-fixed': '#181c1d', 'surface-container': '#ededf8', 'on-error-container': '#93000a', 'surface-container-high': '#e7e7f2', 'surface-bright': '#faf8ff', 'on-secondary-fixed': '#0d1c2e', 'on-surface': '#191b23', 'on-primary-fixed': '#001849', 'secondary-fixed': '#d5e3fc', 'on-surface-variant': '#434654', 'primary': '#003b9a', 'surface-container-low': '#f3f3fd', 'primary-container': '#0050cb', 'on-primary-container': '#c1cfff', 'error': '#ba1a1a', 'outline': '#727687', 'secondary': '#515f74', 'on-primary': '#ffffff', 'outline-variant': '#c3c6d6', 'inverse-primary': '#b3c5ff', 'on-secondary': '#ffffff', 'on-secondary-fixed-variant': '#3a485c', 'inverse-on-surface': '#f0f0fb', 'surface-container-highest': '#e1e2ec', 'tertiary-fixed-dim': '#c4c7c8', 'on-tertiary-container': '#ced1d2', 'surface-container-lowest': '#ffffff', 'inverse-surface': '#2e3038', 'primary-fixed-dim': '#b3c5ff', 'on-primary-fixed-variant': '#003fa4' }, borderRadius: { 'DEFAULT': '0.25rem', 'lg': '0.5rem', 'xl': '0.75rem', 'full': '9999px' }, spacing: { 'base': '4px', 'margin-page': '16px', 'gutter-grid': '12px', 'stack-lg': '24px', 'stack-sm': '8px', 'stack-md': '16px' }, fontFamily: { 'headline-md': ['Plus Jakarta Sans'], 'label-md': ['Inter'], 'body-md': ['Inter'], 'body-lg': ['Inter'], 'headline-sm': ['Plus Jakarta Sans'], 'headline-lg': ['Plus Jakarta Sans'], 'headline-lg-mobile': ['Plus Jakarta Sans'] }, fontSize: { 'headline-md': ['20px', { lineHeight: '28px', fontWeight: '600' }], 'label-md': ['12px', { lineHeight: '16px', letterSpacing: '0.02em', fontWeight: '500' }], 'body-md': ['14px', { lineHeight: '20px', fontWeight: '400' }], 'body-lg': ['16px', { lineHeight: '24px', fontWeight: '400' }], 'headline-sm': ['18px', { lineHeight: '24px', fontWeight: '600' }], 'headline-lg': ['24px', { lineHeight: '32px', fontWeight: '700' }], 'headline-lg-mobile': ['22px', { lineHeight: '28px', fontWeight: '700' }] } } } }</script><style>@layer base { body { -webkit-tap-highlight-color: transparent; overscroll-behavior-y: contain; } .pb-safe { padding-bottom: env(safe-area-inset-bottom); } .pt-safe { padding-top: env(safe-area-inset-top); } }</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface font-body-md"><header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl pt-safe shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-14 px-margin-page flex items-center justify-between"><h1 class="font-headline-md text-headline-md">抢单大厅</h1><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></header><main class="pt-14 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full pb-stack-lg">
+<!-- Profile Header Card -->
+<div class="px-margin-page py-stack-md">
+<div class="relative overflow-hidden bg-primary rounded-xl p-stack-md shadow-md">
+<!-- Decorative Background Element -->
+<div class="absolute -right-4 -top-4 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+<div class="relative flex items-center gap-stack-md">
+<div class="relative">
+<div class="w-20 h-20 rounded-full overflow-hidden border-2 border-white/20">
+<img class="w-full h-full object-cover" data-alt="A professional portrait of a friendly Chinese delivery rider wearing a blue uniform and a helmet, smiling warmly at the camera. Professional studio lighting with a clean, soft-focus urban background. High resolution, high quality, corporate style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAk7CP8FHfHb4JyisMCqoMjzGvQKlbl0UD7DyWdI5mdFOAkCXnyjBDdsRi8s1MpH-ykukLxAULlW22uJ05rDkpvkKp8sx15FLHKE1-Bs9gO1ZMMvfYW3ujj950m-RdWF-M4Uc_K4KXkY7s8EH8QW9Z1ZNWDay9rW2xbfV56fvuavUxUptsxSGP7H5kMSFOHD_7En6DiiU5goG_RmHae2rLQG4dv2shoo4ER-zbJ0sKqLf4gF9jQUVi3mdkW3gYc4tHpuUFrhS3Ifld2">
+</div>
+<div class="absolute -bottom-1 -right-1 bg-surface-container-lowest rounded-full p-1 shadow-sm">
+<span class="material-symbols-outlined text-primary text-[16px]" style="font-variation-settings: &quot;FILL&quot; 1;">verified</span>
+</div>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-primary">王大锤</h2>
+<span class="bg-white/20 text-on-primary text-[10px] px-2 py-0.5 rounded-full font-label-md">钻级骑士</span>
+</div>
+<p class="font-body-md text-on-primary/80 mt-1">ID: 88293410</p>
+<div class="flex items-center gap-1 mt-2">
+<div class="flex">
+<span class="material-symbols-outlined text-[16px] text-secondary-fixed" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+<span class="material-symbols-outlined text-[16px] text-secondary-fixed" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+<span class="material-symbols-outlined text-[16px] text-secondary-fixed" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+<span class="material-symbols-outlined text-[16px] text-secondary-fixed" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+<span class="material-symbols-outlined text-[16px] text-secondary-fixed" style="font-variation-settings: &quot;FILL&quot; 1;">star_half</span>
+</div>
+<span class="font-label-md text-on-primary ml-1">4.9</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Stats Dashboard -->
+<div class="px-margin-page">
+<div class="grid grid-cols-3 gap-gutter-grid bg-surface-container-low p-stack-md rounded-xl">
+<div class="flex flex-col items-center">
+<span class="font-label-md text-on-surface-variant mb-1">今日预估</span>
+<div class="flex items-baseline gap-0.5 text-primary">
+<span class="text-[12px] font-bold">¥</span>
+<span class="font-headline-sm text-headline-sm">128.50</span>
+</div>
+</div>
+<div class="flex flex-col items-center">
+<span class="font-label-md text-on-surface-variant mb-1">今日完单</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">15</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="font-label-md text-on-surface-variant mb-1">准时率</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">99%</span>
+</div>
+</div>
+</div>
+<!-- Status Toggle Bar -->
+<div class="px-margin-page mt-stack-md">
+<div class="flex items-center justify-between p-stack-md rounded-xl bg-surface-container-highest transition-all duration-300" id="status-card">
+<div class="flex items-center gap-stack-sm">
+<div class="w-3 h-3 rounded-full bg-outline animate-pulse" id="status-indicator"></div>
+<span class="font-headline-sm text-headline-sm text-on-surface-variant" id="status-text">当前离线</span>
+</div>
+<button class="relative inline-flex h-8 w-14 items-center rounded-full bg-outline-variant transition-colors" id="toggle-online">
+<span class="sr-only">切换在线状态</span>
+<span class="inline-block h-6 w-6 translate-x-1 transform rounded-full bg-white transition-transform duration-200 ease-in-out shadow-sm" id="toggle-thumb"></span>
+</button>
+</div>
+</div>
+<!-- Menu List -->
+<div class="mt-stack-lg px-margin-page space-y-3">
+<div class="bg-surface-container-low rounded-xl overflow-hidden">
+<!-- Wallet -->
+<a class="flex items-center justify-between p-stack-md active:bg-surface-container-highest transition-colors" href="#">
+<div class="flex items-center gap-stack-md">
+<div class="w-10 h-10 rounded-full bg-primary-container/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">account_balance_wallet</span>
+</div>
+<span class="font-body-lg text-body-lg text-on-surface">我的钱包</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-label-md text-on-surface-variant">¥2,450.00</span>
+<span class="material-symbols-outlined text-outline">chevron_right</span>
+</div>
+</a>
+<!-- Performance -->
+<a class="flex items-center justify-between p-stack-md active:bg-surface-container-highest transition-colors border-t border-surface-variant" href="#">
+<div class="flex items-center gap-stack-md">
+<div class="w-10 h-10 rounded-full bg-secondary-container/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary">leaderboard</span>
+</div>
+<span class="font-body-lg text-body-lg text-on-surface">跑单统计</span>
+</div>
+<span class="material-symbols-outlined text-outline">chevron_right</span>
+</a>
+</div>
+<div class="bg-surface-container-low rounded-xl overflow-hidden">
+<!-- Mall -->
+<a class="flex items-center justify-between p-stack-md active:bg-surface-container-highest transition-colors" href="#">
+<div class="flex items-center gap-stack-md">
+<div class="w-10 h-10 rounded-full bg-tertiary-container/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary">shopping_bag</span>
+</div>
+<span class="font-body-lg text-body-lg text-on-surface">装备商城</span>
+</div>
+<span class="material-symbols-outlined text-outline">chevron_right</span>
+</a>
+<!-- Training -->
+<a class="flex items-center justify-between p-stack-md active:bg-surface-container-highest transition-colors border-t border-surface-variant" href="#">
+<div class="flex items-center gap-stack-md">
+<div class="w-10 h-10 rounded-full bg-primary-container/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">school</span>
+</div>
+<span class="font-body-lg text-body-lg text-on-surface">骑士培训</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-error"></div>
+<span class="material-symbols-outlined text-outline">chevron_right</span>
+</div>
+</a>
+</div>
+<div class="bg-surface-container-low rounded-xl overflow-hidden">
+<!-- Help -->
+<a class="flex items-center justify-between p-stack-md active:bg-surface-container-highest transition-colors" href="#">
+<div class="flex items-center gap-stack-md">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">help_center</span>
+</div>
+<span class="font-body-lg text-body-lg text-on-surface">帮助中心</span>
+</div>
+<span class="material-symbols-outlined text-outline">chevron_right</span>
+</a>
+<!-- Settings -->
+<a class="flex items-center justify-between p-stack-md active:bg-surface-container-highest transition-colors border-t border-surface-variant" href="#">
+<div class="flex items-center gap-stack-md">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">settings</span>
+</div>
+<span class="font-body-lg text-body-lg text-on-surface">设置</span>
+</div>
+<span class="material-symbols-outlined text-outline">chevron_right</span>
+</a>
+</div>
+</div>
+<!-- Logout / Switch Account -->
+<div class="px-margin-page mt-stack-lg">
+<button class="w-full py-stack-md rounded-xl font-headline-sm text-headline-sm text-error bg-error-container/20 active:bg-error-container/40 transition-colors">
+      退出登录
+    </button>
+</div>
+<!-- Decorative Sparkline Section -->
+<div class="mt-stack-lg px-margin-page">
+<div class="bg-surface-container-low p-stack-md rounded-xl">
+<h3 class="font-label-md text-on-surface-variant mb-stack-md uppercase tracking-wider">本周收益趋势</h3>
+<div class="h-20 flex items-end justify-between gap-1">
+<div class="bg-primary/20 w-full rounded-t-sm transition-all duration-700" style="height: 40%"></div>
+<div class="bg-primary/20 w-full rounded-t-sm transition-all duration-700" style="height: 65%"></div>
+<div class="bg-primary/20 w-full rounded-t-sm transition-all duration-700" style="height: 50%"></div>
+<div class="bg-primary/20 w-full rounded-t-sm transition-all duration-700" style="height: 85%"></div>
+<div class="bg-primary/20 w-full rounded-t-sm transition-all duration-700" style="height: 35%"></div>
+<div class="bg-primary/20 w-full rounded-t-sm transition-all duration-700" style="height: 70%"></div>
+<div class="bg-primary w-full rounded-t-sm transition-all duration-700" style="height: 95%"></div>
+</div>
+<div class="flex justify-between mt-2 px-1">
+<span class="text-[10px] text-on-surface-variant font-label-md">周一</span>
+<span class="text-[10px] text-on-surface-variant font-label-md">今天</span>
+</div>
+</div>
+</div>
+<script>
+    (function() {
+      const toggle = document.getElementById('toggle-online');
+      const thumb = document.getElementById('toggle-thumb');
+      const indicator = document.getElementById('status-indicator');
+      const text = document.getElementById('status-text');
+      const card = document.getElementById('status-card');
+      let isOnline = false;
+
+      toggle.addEventListener('click', () => {
+        isOnline = !isOnline;
+        
+        if (isOnline) {
+          toggle.classList.remove('bg-outline-variant');
+          toggle.classList.add('bg-primary');
+          thumb.classList.add('translate-x-7');
+          indicator.classList.remove('bg-outline');
+          indicator.classList.add('bg-[#10b981]'); // Emerald green for online
+          text.innerText = '正在接单';
+          text.classList.remove('text-on-surface-variant');
+          text.classList.add('text-primary');
+          card.classList.remove('bg-surface-container-highest');
+          card.classList.add('bg-secondary-container/50');
+        } else {
+          toggle.classList.add('bg-outline-variant');
+          toggle.classList.remove('bg-primary');
+          thumb.classList.remove('translate-x-7');
+          indicator.classList.add('bg-outline');
+          indicator.classList.remove('bg-[#10b981]');
+          text.innerText = '当前离线';
+          text.classList.add('text-on-surface-variant');
+          text.classList.remove('text-primary');
+          card.classList.add('bg-surface-container-highest');
+          card.classList.remove('bg-secondary-container/50');
+        }
+      });
+
+      // Simple parallax on scroll for the card
+      window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const profileCard = document.querySelector('.bg-primary.rounded-xl');
+        if (profileCard) {
+            profileCard.style.transform = `translateY(${scrolled * 0.05}px)`;
+        }
+      });
+    })();
+  </script>
+</div></main><nav class="fixed bottom-0 w-full z-50 bg-surface/80 backdrop-blur-xl pb-safe shadow-[0_-1px_8px_rgba(0,0,0,0.04)]" data-active-classes="text-primary"><div class="h-16 flex items-center justify-around"><a class="flex flex-col items-center justify-center gap-1 flex-1 text-on-surface-variant" data-path="grab-orders" href="#"><span class="material-symbols-outlined">task</span><span class="font-label-md text-label-md">抢单</span></a><a class="flex flex-col items-center justify-center gap-1 flex-1 text-on-surface-variant" data-path="orders" href="#"><span class="material-symbols-outlined">receipt_long</span><span class="font-label-md text-label-md">订单</span></a><a class="flex flex-col items-center justify-center gap-1 flex-1 text-primary" data-path="profile" href="#"><span class="material-symbols-outlined">account_circle</span><span class="font-label-md text-label-md">我的</span></a></div></nav>
+
+</body></html>
