@@ -1,127 +1,176 @@
 <template>
 	<view class="container">
-		<!-- 地图区域 -->
-		<view class="map-section">
-			<image class="map-image" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_JzEKN-GssBGh_NIEVe_yag59_hUMViKUiJX763elGTdt32nGGsi195QiOc8EtAQ5J7DLYPS7Lm88P-tnJHpH0KyFKQ7umo25NEoKr-eHxvy0GTVrz6f4uQuribMUgByZKzo_2yLPRy7Am-a3wfm4ACh2etFPQbxWTM_25178VBFeCwHZS0w6nwNYLxNJD29jwAUHZ7A3lulcs5Y_PWtiED1YyfLZc-qzIUvblKuTamWI7zpxo3Tv8g1x35pBipfsTAvZPUrSbMo8" mode="aspectFill"></image>
-			<view class="map-overlay">
-				<view class="earning-display">
-					<text class="earning-label">预计收入</text>
-					<view class="earning-amount">
-						<text class="currency">¥</text>
-						<text class="amount">28.50</text>
+		<!-- 加载中 -->
+		<view v-if="loading" style="display:flex;justify-content:center;align-items:center;padding:40px 0;color:#434654;">
+			<text>加载中...</text>
+		</view>
+
+		<block v-else>
+			<!-- 地图区域 -->
+			<view class="map-section">
+				<image class="map-image" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_JzEKN-GssBGh_NIEVe_yag59_hUMViKUiJX763elGTdt32nGGsi195QiOc8EtAQ5J7DLYPS7Lm88P-tnJHpH0KyFKQ7umo25NEoKr-eHxvy0GTVrz6f4uQuribMUgByZKzo_2yLPRy7Am-a3wfm4ACh2etFPQbxWTM_25178VBFeCwHZS0w6nwNYLxNJD29jwAUHZ7A3lulcs5Y_PWtiED1YyfLZc-qzIUvblKuTamWI7zpxo3Tv8g1x35pBipfsTAvZPUrSbMo8" mode="aspectFill"></image>
+				<view class="map-overlay">
+					<view class="earning-display">
+						<text class="earning-label">预计收入</text>
+						<view class="earning-amount">
+							<text class="currency">¥</text>
+							<text class="amount">{{ order.price }}</text>
+						</view>
+					</view>
+					<view class="distance-display">
+						<text class="distance-label">配送总里程</text>
+						<text class="distance-value">5.2km</text>
 					</view>
 				</view>
-				<view class="distance-display">
-					<text class="distance-label">配送总里程</text>
-					<text class="distance-value">5.2km</text>
-				</view>
-			</view>
-		</view>
-
-		<!-- 路线详情卡片 -->
-		<view class="route-card">
-			<!-- 取货点 -->
-			<view class="route-item">
-				<view class="route-icons">
-					<view class="icon-circle primary">
-						<text>🌿</text>
-					</view>
-					<view class="route-line"></view>
-				</view>
-				<view class="route-content">
-					<view class="route-header">
-						<view class="route-badge primary">取货</view>
-						<text class="route-distance">距你 800m</text>
-					</view>
-					<text class="route-title">愚园路 108 号绿地商务大厦</text>
-					<text class="route-desc">15楼 1502室 (前台取件)</text>
-				</view>
 			</view>
 
-			<!-- 送货点 -->
-			<view class="route-item">
-				<view class="route-icons">
-					<view class="icon-circle secondary">
-						<text>📍</text>
+			<!-- 路线详情卡片 -->
+			<view class="route-card">
+				<!-- 取货点 -->
+				<view class="route-item">
+					<view class="route-icons">
+						<view class="icon-circle primary">
+							<text>🌿</text>
+						</view>
+						<view class="route-line"></view>
+					</view>
+					<view class="route-content">
+						<view class="route-header">
+							<view class="route-badge primary">取货</view>
+							<text class="route-distance">距你 800m</text>
+						</view>
+						<text class="route-title">{{ order.pickup_address }}</text>
 					</view>
 				</view>
-				<view class="route-content">
-					<view class="route-header">
-						<view class="route-badge secondary">送货</view>
-						<text class="route-distance">距取货点 4.4km</text>
+
+				<!-- 送货点 -->
+				<view class="route-item">
+					<view class="route-icons">
+						<view class="icon-circle secondary">
+							<text>📍</text>
+						</view>
 					</view>
-					<text class="route-title">南京西路 1618 号久光百货</text>
-					<text class="route-desc">B1层 停车场出口旁</text>
+					<view class="route-content">
+						<view class="route-header">
+							<view class="route-badge secondary">送货</view>
+							<text class="route-distance">距取货点 4.4km</text>
+						</view>
+						<text class="route-title">{{ order.delivery_address }}</text>
+					</view>
 				</view>
 			</view>
-		</view>
 
-		<!-- 订单要求 -->
-		<view class="requirements-grid">
-			<view class="requirement-card">
-				<view class="requirement-header">
-					<text class="requirement-icon">📦</text>
-					<text class="requirement-label">物品信息</text>
+			<!-- 订单要求 -->
+			<view class="requirements-grid">
+				<view class="requirement-card">
+					<view class="requirement-header">
+						<text class="requirement-icon">📦</text>
+						<text class="requirement-label">物品信息</text>
+					</view>
+					<text class="requirement-value">{{ order.item_type }} / {{ order.item_weight }}kg</text>
 				</view>
-				<text class="requirement-value">鲜花 / 3kg</text>
-			</view>
-			<view class="requirement-card">
-				<view class="requirement-header">
-					<text class="requirement-icon">⏰</text>
-					<text class="requirement-label">送达要求</text>
+				<view class="requirement-card">
+					<view class="requirement-header">
+						<text class="requirement-icon">⏰</text>
+						<text class="requirement-label">送达要求</text>
+					</view>
+					<text class="requirement-value">{{ order.pickup_time }}</text>
 				</view>
-				<text class="requirement-value">14:30 前</text>
 			</view>
-		</view>
 
-		<!-- 订单备注 -->
-		<view class="remarks-section">
-			<view class="remarks-card">
-				<view class="remarks-header">
-					<text class="remarks-icon">📝</text>
-					<text class="remarks-label">订单备注</text>
-				</view>
-				<text class="remarks-text">"请小心拿放，是易碎礼品。由于写字楼电梯较慢，建议走货梯。到达前请先电话联系收货人。"</text>
-			</view>
-		</view>
-
-		<!-- 奖励提示 -->
-		<view class="incentive-banner">
-			<view class="incentive-content">
-				<text class="incentive-title">准时必达奖</text>
-				<text class="incentive-desc">准时送达可额外获得 ¥2.00 奖励</text>
-			</view>
-			<view class="incentive-icon">
-				<view class="clock-animation">
-					<text class="clock-emoji">🕐</text>
+			<!-- 订单备注 -->
+			<view class="remarks-section">
+				<view class="remarks-card">
+					<view class="remarks-header">
+						<text class="remarks-icon">📝</text>
+						<text class="remarks-label">订单备注</text>
+					</view>
+					<text class="remarks-text">{{ order.remark }}</text>
 				</view>
 			</view>
-		</view>
 
-		<!-- 底部操作栏 -->
-		<view class="bottom-bar">
-			<view class="grab-button" @click="grabOrder">
-				<text class="grab-icon">⚡</text>
-				<text class="grab-text">立即抢单</text>
+			<!-- 奖励提示 -->
+			<view class="incentive-banner">
+				<view class="incentive-content">
+					<text class="incentive-title">准时必达奖</text>
+					<text class="incentive-desc">准时送达可额外获得 ¥2.00 奖励</text>
+				</view>
+				<view class="incentive-icon">
+					<view class="clock-animation">
+						<text class="clock-emoji">🕐</text>
+					</view>
+				</view>
 			</view>
-		</view>
+
+			<!-- 底部操作栏 -->
+			<view class="bottom-bar" v-if="order.status === 'pending'">
+				<view class="grab-button" @click="grabOrder">
+					<text class="grab-icon">⚡</text>
+					<text class="grab-text">立即抢单</text>
+				</view>
+			</view>
+		</block>
 	</view>
 </template>
 
 <script>
-export default {
-	methods: {
-		grabOrder() {
-			uni.showLoading({
-				title: '抢单中...'
-			});
+import { getRiderId } from '@/common/uid.js'
 
-			setTimeout(() => {
-				uni.hideLoading();
-				uni.navigateTo({
-					url: '/pages/order-success/index'
-				});
-			}, 1200);
+export default {
+	data() {
+		return {
+			orderId: '',
+			order: {},
+			loading: true
+		}
+	},
+	onLoad(options) {
+		this.orderId = options.id
+		this.loadOrderDetail()
+	},
+	methods: {
+		async loadOrderDetail() {
+			this.loading = true
+			uni.showLoading({ title: '加载中...' })
+			try {
+				const getOrder = uniCloud.importObject('get-order')
+				const res = await getOrder.getOrderDetail({ orderId: this.orderId })
+				if (res.errCode === 0) {
+					this.order = res.order || {}
+				} else {
+					uni.showToast({ title: res.errMsg || '加载失败', icon: 'none' })
+				}
+			} catch (e) {
+				uni.showToast({ title: '加载失败', icon: 'none' })
+			} finally {
+				uni.hideLoading()
+				this.loading = false
+			}
+		},
+		async grabOrder() {
+			uni.showLoading({ title: '抢单中...' })
+			try {
+				const getOrder = uniCloud.importObject('get-order')
+				const res = await getOrder.grabOrder({
+					orderId: this.order._id,
+					riderId: getRiderId(),
+					riderName: ''
+				})
+				if (res.errCode === 0) {
+					uni.showToast({ title: '抢单成功', icon: 'success' })
+					setTimeout(() => {
+						uni.navigateTo({
+							url: '/pages/order-success/index?id=' + this.order._id
+						})
+					}, 1000)
+				} else {
+					uni.showToast({ title: res.errMsg || '抢单失败', icon: 'none' })
+				}
+			} catch (e) {
+				uni.showToast({ title: '抢单失败', icon: 'none' })
+			} finally {
+				uni.hideLoading()
+			}
 		}
 	}
 }

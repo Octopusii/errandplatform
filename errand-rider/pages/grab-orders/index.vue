@@ -22,98 +22,62 @@
 			<view class="map-overlay">
 				<view class="order-count">
 					<view class="pulse-dot"></view>
-					<text class="count-text">附近有 12 个新订单待抢</text>
+					<text class="count-text">附近有 {{ orderList.length }} 个新订单待抢</text>
 				</view>
 			</view>
 		</view>
 
 		<!-- 订单列表 -->
 		<view class="orders-list">
-			<!-- 订单卡片1 -->
-			<view class="order-card" v-if="orderList.length > 0">
+			<view
+				class="order-card"
+				v-for="order in orderList"
+				:key="order._id"
+				@click="goDetail(order)"
+			>
 				<view class="card-header">
 					<view class="tags">
-						<text class="tag tag-primary">帮我送</text>
-						<text class="tag tag-secondary">配送费加价</text>
+						<text class="tag" :class="order.order_type === 'send' ? 'tag-primary' : 'tag-tertiary'">
+							{{ order.order_type === 'send' ? '帮我送' : '帮我买' }}
+						</text>
 					</view>
 					<view class="earning">
 						<text class="earning-label">预计收入</text>
-						<text class="earning-amount">¥ 28.50</text>
+						<text class="earning-amount">¥ {{ order.price || 0 }}</text>
 					</view>
 				</view>
 
 				<view class="route-info">
 					<view class="route-icons">
-						<text class="route-icon">🔵</text>
+						<text class="route-icon">{{ order.order_type === 'send' ? '🔵' : '🛒' }}</text>
 						<view class="route-line"></view>
 						<text class="route-icon">🔴</text>
 					</view>
 					<view class="route-details">
 						<view class="location-item">
-							<text class="location-label">取货：南京西路 1266 号恒隆广场</text>
-							<text class="location-distance">距离当前 1.2km</text>
+							<text class="location-label">
+								{{ order.order_type === 'send' ? '取货：' + (order.pickup_address || '—') : '购买：' + (order.item_description || '—') }}
+							</text>
 						</view>
 						<view class="location-item">
-							<text class="location-label highlight">送货：陆家嘴环路 1000 号恒生银行大厦</text>
-							<text class="location-distance">配送距离 4.5km</text>
+							<text class="location-label highlight">送货：{{ order.delivery_address || '—' }}</text>
 						</view>
 					</view>
 				</view>
 
-				<view class="order-remark">
+				<view class="order-remark" v-if="order.remark">
 					<text class="remark-icon">ℹ️</text>
-					<text class="remark-text">备注：急件，需送货上门，请带保温袋</text>
+					<text class="remark-text">备注：{{ order.remark }}</text>
 				</view>
 
-				<button class="grab-btn" @click="grabOrder(0)">
-					<text>立即抢单</text>
-					<text class="btn-icon">⚡</text>
-				</button>
-			</view>
-
-			<!-- 订单卡片2 -->
-			<view class="order-card" v-if="orderList.length > 1">
-				<view class="card-header">
-					<view class="tags">
-						<text class="tag tag-tertiary">帮我买</text>
-					</view>
-					<view class="earning">
-						<text class="earning-label">预计收入</text>
-						<text class="earning-amount">¥ 15.00</text>
-					</view>
-				</view>
-
-				<view class="route-info">
-					<view class="route-icons">
-						<text class="route-icon">🛒</text>
-						<view class="route-line"></view>
-						<text class="route-icon">🔴</text>
-					</view>
-					<view class="route-details">
-						<view class="location-item">
-							<text class="location-label">购买：全家便利店 (汉口路店)</text>
-							<text class="location-distance">距离当前 0.5km</text>
-						</view>
-						<view class="location-item">
-							<text class="location-label highlight">送货：外滩街道福州路 22 号</text>
-							<text class="location-distance">配送距离 0.8km</text>
-						</view>
-					</view>
-				</view>
-
-				<view class="order-remark">
-					<text class="remark-icon">📄</text>
-					<text class="remark-text">商品：冰镇可乐 x2, 乐事薯片 x1</text>
-				</view>
-
-				<button class="grab-btn" @click="grabOrder(1)">
+				<button class="grab-btn" @click.stop="grabOrder(order)">
 					<text>立即抢单</text>
 					<text class="btn-icon">⚡</text>
 				</button>
 			</view>
 
 			<!-- 空状态 -->
-			<view class="empty-state" v-if="orderList.length === 0">
+			<view class="empty-state" v-if="!loading && orderList.length === 0">
 				<view class="empty-line"></view>
 				<text class="empty-text">没有更多订单了</text>
 			</view>
@@ -122,37 +86,72 @@
 </template>
 
 <script>
+import { getRiderId } from '@/common/uid.js'
+
 export default {
 	data() {
 		return {
 			isWorking: true,
-			orderList: [
-				{ id: 1, type: 'send' },
-				{ id: 2, type: 'buy' }
-			]
+			orderList: [],
+			loading: false
 		}
 	},
+	onShow() {
+		this.loadOrders()
+	},
 	methods: {
-		toggleStatus() {
-			this.isWorking = !this.isWorking;
+		async loadOrders() {
+			this.loading = true
+			uni.showLoading({ title: '加载中...' })
+			try {
+				const getOrder = uniCloud.importObject('get-order')
+				const res = await getOrder.getPendingOrders({ page: 1, pageSize: 20 })
+				if (res.errCode === 0) {
+					this.orderList = res.list || []
+				} else {
+					uni.showToast({ title: res.errMsg || '加载失败', icon: 'none' })
+				}
+			} catch (e) {
+				uni.showToast({ title: '加载失败', icon: 'none' })
+			} finally {
+				uni.hideLoading()
+				this.loading = false
+			}
 		},
-		grabOrder(index) {
-			const btn = event.target;
-			btn.innerHTML = '<text>抢单中...</text><text class="btn-icon">🔄</text>';
-			btn.classList.add('loading');
-
-			setTimeout(() => {
-				btn.innerHTML = '<text>成功抢单!</text><text class="btn-icon">✅</text>';
-				btn.classList.remove('loading');
-				btn.classList.add('success');
-
-				setTimeout(() => {
-					// 跳转到抢单成功页面
-					uni.navigateTo({
-						url: '/pages/order-success/index'
-					});
-				}, 800);
-			}, 1200);
+		toggleStatus() {
+			this.isWorking = !this.isWorking
+		},
+		async grabOrder(order) {
+			uni.showLoading({ title: '抢单中...' })
+			try {
+				const getOrder = uniCloud.importObject('get-order')
+				const res = await getOrder.grabOrder({
+					orderId: order._id,
+					riderId: getRiderId(),
+					riderName: ''
+				})
+				if (res.errCode === 0) {
+					uni.showToast({ title: '抢单成功', icon: 'success' })
+					this.loadOrders()
+					setTimeout(() => {
+						uni.navigateTo({
+							url: '/pages/order-success/index?id=' + order._id
+						})
+					}, 1000)
+				} else {
+					uni.showToast({ title: res.errMsg || '抢单失败', icon: 'none' })
+				}
+			} catch (e) {
+				uni.showToast({ title: '抢单失败', icon: 'none' })
+			} finally {
+				uni.hideLoading()
+			}
+		},
+		goDetail(order) {
+			const url = order.order_type === 'send'
+				? '/pages/order-detail/send?id=' + order._id
+				: '/pages/order-detail/buy?id=' + order._id
+			uni.navigateTo({ url })
 		}
 	}
 }

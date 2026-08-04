@@ -72,20 +72,20 @@
 			{
 				"pagePath": "pages/grab-orders/index",
 				"text": "抢单",
-				"iconPath": "static/icons/task.svg",
-				"selectedIconPath": "static/icons/task-active.svg"
+				"iconPath": "static/icons/task.png",
+				"selectedIconPath": "static/icons/task-active.png"
 			},
 			{
 				"pagePath": "pages/orders/index",
 				"text": "订单",
-				"iconPath": "static/icons/receipt_long.svg",
-				"selectedIconPath": "static/icons/receipt_long-active.svg"
+				"iconPath": "static/icons/receipt_long.png",
+				"selectedIconPath": "static/icons/receipt_long-active.png"
 			},
 			{
 				"pagePath": "pages/profile/index",
 				"text": "我的",
-				"iconPath": "static/icons/account_circle.svg",
-				"selectedIconPath": "static/icons/account_circle-active.svg"
+				"iconPath": "static/icons/account_circle.png",
+				"selectedIconPath": "static/icons/account_circle-active.png"
 			}
 		]
 	},

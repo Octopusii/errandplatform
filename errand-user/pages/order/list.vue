@@ -165,9 +165,12 @@ export default {
 				const res = await order.getOrders({ uid: getUid() })
 				if (res.errCode === 0) {
 					this.orders = res.list || []
+				} else {
+					uni.showToast({ title: res.errMsg || '订单加载失败', icon: 'none' })
 				}
 			} catch (e) {
 				console.error('loadOrders error:', e)
+				uni.showToast({ title: '网络错误，请检查云对象是否已部署', icon: 'none' })
 			} finally {
 				this.loading = false
 			}

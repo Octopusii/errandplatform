@@ -1,145 +1,194 @@
 <template>
 	<view class="container">
-		<!-- 状态横幅 -->
-		<view class="status-banner">
-			<view class="banner-content">
-				<view class="earning-section">
-					<text class="earning-label">预计收入</text>
-					<view class="earning-display">
-						<text class="currency">¥</text>
-						<text class="amount">28.50</text>
-					</view>
-				</view>
-				<view class="info-section">
-					<view class="priority-badge">
-						<text class="priority-icon">⚡</text>
-						<text class="priority-text">高优派送</text>
-					</view>
-					<text class="distance-text">距离 3.2km</text>
-				</view>
-			</view>
-			<!-- 装饰元素 -->
-			<view class="decoration-top"></view>
-			<view class="decoration-bottom"></view>
+		<!-- 加载中 -->
+		<view v-if="loading" style="display:flex;justify-content:center;align-items:center;padding:40px 0;color:#434654;">
+			<text>加载中...</text>
 		</view>
 
-		<!-- 主要内容 -->
-		<view class="main-content">
-			<!-- 采购清单卡片 -->
-			<view class="checklist-card">
-				<view class="checklist-header">
-					<text class="checklist-icon">🛒</text>
-					<text class="checklist-title">采购清单</text>
-				</view>
-
-				<!-- 清单项1 -->
-				<view class="checklist-item">
-					<view class="item-icon">
-						<text>☕</text>
-					</view>
-					<view class="item-details">
-						<text class="item-name">冰美式 (大杯)</text>
-						<text class="item-note">备注：去冰，不加糖</text>
-					</view>
-					<text class="item-quantity">x2</text>
-				</view>
-
-				<!-- 清单项2 -->
-				<view class="checklist-item">
-					<view class="item-icon">
-						<text>🍞</text>
-					</view>
-					<view class="item-details">
-						<text class="item-name">全麦吐司</text>
-						<text class="item-note">备注：选日期最新的</text>
-					</view>
-					<text class="item-quantity">x1</text>
-				</view>
-
-				<view class="checklist-divider"></view>
-
-				<view class="checklist-footer">
-					<text class="footer-label">预估商品金额</text>
-					<text class="footer-amount">约 ¥52.00</text>
-				</view>
-			</view>
-
-			<!-- 物流信息网格 -->
-			<view class="logistics-grid">
-				<!-- 采购地址 -->
-				<view class="logistics-card">
-					<view class="logistics-header">
-						<view class="logistics-icon secondary">
-							<text>🏪</text>
+		<block v-else>
+			<!-- 状态横幅 -->
+			<view class="status-banner">
+				<view class="banner-content">
+					<view class="earning-section">
+						<text class="earning-label">预计收入</text>
+						<view class="earning-display">
+							<text class="currency">¥</text>
+							<text class="amount">{{ order.price }}</text>
 						</view>
-						<text class="logistics-label">采购地址</text>
 					</view>
-					<view class="logistics-content">
-						<text class="logistics-title">就近购买</text>
-						<text class="logistics-desc">建议前往：星巴克(长宁来福士店) 或 附近便利店</text>
-					</view>
-					<view class="logistics-map">
-						<image class="map-image" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA99ceP0B_yjYO0CLQLXY8MA2flcTPFJsHfpWMbvV36AaijyL7lQhx9YhJsnbehU-tSgw5WPCky1LN6K96r-JgGCJyxuINWrS2keTJmhd8_aRDVFn3luxUNy3pXNT4KVLQ5u4vdEAff1Rw_JGRQ1Xrty7fPUAf9D7wmhtk25Ozs3EA51PbK-AQgEkKq6u3l7zpyprt_ecQAJc4EIwq5Kb6p4CSaLe0cn3br6ebTxVIde2OHE7iml1uq1u8wR8m672dZIFl-YJy8wa6V" mode="aspectFill"></image>
-					</view>
-				</view>
-
-				<!-- 送货地址 -->
-				<view class="logistics-card">
-					<view class="logistics-header">
-						<view class="logistics-icon primary">
-							<text>📍</text>
+					<view class="info-section">
+						<view class="priority-badge">
+							<text class="priority-icon">⚡</text>
+							<text class="priority-text">高优派送</text>
 						</view>
-						<text class="logistics-label">送货地址</text>
+						<text class="distance-text">距离 3.2km</text>
 					</view>
-					<view class="logistics-content">
-						<text class="logistics-title">中山万博广场 B座 1602室</text>
-						<text class="logistics-desc">张先生 · 138****8888</text>
+				</view>
+				<!-- 装饰元素 -->
+				<view class="decoration-top"></view>
+				<view class="decoration-bottom"></view>
+			</view>
+
+			<!-- 主要内容 -->
+			<view class="main-content">
+				<!-- 采购清单卡片 -->
+				<view class="checklist-card">
+					<view class="checklist-header">
+						<text class="checklist-icon">🛒</text>
+						<text class="checklist-title">采购清单</text>
+					</view>
+
+					<!-- 商品描述 -->
+					<view class="checklist-item">
+						<view class="item-icon">
+							<text>🛍️</text>
+						</view>
+						<view class="item-details">
+							<text class="item-name">{{ order.item_description }}</text>
+						</view>
+					</view>
+
+					<view class="checklist-divider"></view>
+
+					<view class="checklist-footer">
+						<text class="footer-label">预估商品金额</text>
+						<text class="footer-amount">约 ¥{{ order.estimated_price }}</text>
+					</view>
+				</view>
+
+				<!-- 物流信息网格 -->
+				<view class="logistics-grid">
+					<!-- 采购地址 -->
+					<view class="logistics-card">
+						<view class="logistics-header">
+							<view class="logistics-icon secondary">
+								<text>🏪</text>
+							</view>
+							<text class="logistics-label">采购地址</text>
+						</view>
+						<view class="logistics-content">
+							<text class="logistics-title">{{ purchaseAddress }}</text>
+						</view>
+						<view class="logistics-map" v-if="order.purchase_mode === 'near'">
+							<image class="map-image" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA99ceP0B_yjYO0CLQLXY8MA2flcTPFJsHfpWMbvV36AaijyL7lQhx9YhJsnbehU-tSgw5WPCky1LN6K96r-JgGCJyxuINWrS2keTJmhd8_aRDVFn3luxUNy3pXNT4KVLQ5u4vdEAff1Rw_JGRQ1Xrty7fPUAf9D7wmhtk25Ozs3EA51PbK-AQgEkKq6u3l7zpyprt_ecQAJc4EIwq5Kb6p4CSaLe0cn3br6ebTxVIde2OHE7iml1uq1u8wR8m672dZIFl-YJy8wa6V" mode="aspectFill"></image>
+						</view>
+					</view>
+
+					<!-- 送货地址 -->
+					<view class="logistics-card">
+						<view class="logistics-header">
+							<view class="logistics-icon primary">
+								<text>📍</text>
+							</view>
+							<text class="logistics-label">送货地址</text>
+						</view>
+						<view class="logistics-content">
+							<text class="logistics-title">{{ order.delivery_address }}</text>
+						</view>
+					</view>
+
+					<!-- 订单备注 -->
+					<view class="logistics-card" v-if="order.remark">
+						<view class="logistics-header">
+							<view class="logistics-icon secondary">
+								<text>📝</text>
+							</view>
+							<text class="logistics-label">订单备注</text>
+						</view>
+						<view class="logistics-content">
+							<text class="logistics-desc">{{ order.remark }}</text>
+						</view>
+					</view>
+				</view>
+
+				<!-- 附加信息标签 -->
+				<view class="info-chips">
+					<view class="info-chip">
+						<text class="chip-icon">⏰</text>
+						<text class="chip-text">要求 45分钟内送达</text>
+					</view>
+					<view class="info-chip">
+						<text class="chip-icon">📏</text>
+						<text class="chip-text">全程 4.5km</text>
 					</view>
 				</view>
 			</view>
 
-			<!-- 附加信息标签 -->
-			<view class="info-chips">
-				<view class="info-chip">
-					<text class="chip-icon">⏰</text>
-					<text class="chip-text">要求 45分钟内送达</text>
-				</view>
-				<view class="info-chip">
-					<text class="chip-icon">📏</text>
-					<text class="chip-text">全程 4.5km</text>
+			<!-- 底部操作栏 -->
+			<view class="bottom-bar" v-if="order.status === 'pending'">
+				<view class="grab-button" @click="grabOrder">
+					<text class="grab-icon">👆</text>
+					<text class="grab-text">立即抢单</text>
 				</view>
 			</view>
-		</view>
-
-		<!-- 底部操作栏 -->
-		<view class="bottom-bar">
-			<view class="grab-button" @click="grabOrder">
-				<text class="grab-icon">👆</text>
-				<text class="grab-text">立即抢单</text>
-			</view>
-		</view>
+		</block>
 	</view>
 </template>
 
 <script>
+import { getRiderId } from '@/common/uid.js'
+
 export default {
+	data() {
+		return {
+			orderId: '',
+			order: {},
+			loading: true
+		}
+	},
+	computed: {
+		purchaseAddress() {
+			return this.order.purchase_mode === 'near' ? '就近购买' : '指定地址'
+		}
+	},
+	onLoad(options) {
+		this.orderId = options.id
+		this.loadOrderDetail()
+	},
 	methods: {
-		grabOrder() {
-			uni.showLoading({
-				title: '正在抢单...'
-			});
-
-			setTimeout(() => {
-				uni.hideLoading();
-				uni.navigateTo({
-					url: '/pages/order-success/index'
-				});
-
-				// 震动反馈
-				uni.vibrateShort({
-					success: () => {}
-				});
-			}, 1200);
+		async loadOrderDetail() {
+			this.loading = true
+			uni.showLoading({ title: '加载中...' })
+			try {
+				const getOrder = uniCloud.importObject('get-order')
+				const res = await getOrder.getOrderDetail({ orderId: this.orderId })
+				if (res.errCode === 0) {
+					this.order = res.order || {}
+				} else {
+					uni.showToast({ title: res.errMsg || '加载失败', icon: 'none' })
+				}
+			} catch (e) {
+				uni.showToast({ title: '加载失败', icon: 'none' })
+			} finally {
+				uni.hideLoading()
+				this.loading = false
+			}
+		},
+		async grabOrder() {
+			uni.showLoading({ title: '抢单中...' })
+			try {
+				const getOrder = uniCloud.importObject('get-order')
+				const res = await getOrder.grabOrder({
+					orderId: this.order._id,
+					riderId: getRiderId(),
+					riderName: ''
+				})
+				if (res.errCode === 0) {
+					uni.showToast({ title: '抢单成功', icon: 'success' })
+					uni.vibrateShort({ success: () => {} })
+					setTimeout(() => {
+						uni.navigateTo({
+							url: '/pages/order-success/index?id=' + this.order._id
+						})
+					}, 1000)
+				} else {
+					uni.showToast({ title: res.errMsg || '抢单失败', icon: 'none' })
+				}
+			} catch (e) {
+				uni.showToast({ title: '抢单失败', icon: 'none' })
+			} finally {
+				uni.hideLoading()
+			}
 		}
 	}
 }

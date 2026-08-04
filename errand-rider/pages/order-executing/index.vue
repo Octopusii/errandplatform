@@ -1,160 +1,220 @@
 <template>
 	<view class="container">
-		<!-- 状态追踪器 -->
-		<view class="status-tracker">
-			<view class="progress-line">
-				<view class="progress-bar" :style="{ width: progressWidth }"></view>
-			</view>
-
-			<!-- 步骤1：已接单 -->
-			<view class="step">
-				<view class="step-circle completed">
-					<text class="step-icon">✓</text>
-				</view>
-				<text class="step-label">已接单</text>
-			</view>
-
-			<!-- 步骤2：已取货 -->
-			<view class="step">
-				<view class="step-circle completed">
-					<text class="step-icon">📦</text>
-				</view>
-				<text class="step-label">已取货</text>
-			</view>
-
-			<!-- 步骤3：配送中 -->
-			<view class="step active">
-				<view class="step-circle active">
-					<text class="step-icon">🚚</text>
-				</view>
-				<text class="step-label active">配送中</text>
-			</view>
-
-			<!-- 步骤4：待送达 -->
-			<view class="step">
-				<view class="step-circle">
-					<text class="step-icon">🚩</text>
-				</view>
-				<text class="step-label">待送达</text>
-			</view>
+		<!-- 加载中 -->
+		<view v-if="loading" style="display:flex;justify-content:center;align-items:center;padding:40px 0;color:#434654;">
+			<text>加载中...</text>
 		</view>
 
-		<!-- 地图视图 -->
-		<view class="map-view">
-			<image class="map-image" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_JzEKN-GssBGh_NIEVe_yag59_hUMViKUiJX763elGTdt32nGGsi195QiOc8EtAQ5J7DLYPS7Lm88P-tnJHpH0KyFKQ7umo25NEoKr-eHxvy0GTVrz6f4uQuribMUgByZKzo_2yLPRy7Am-a3wfm4ACh2etFPQbxWTM_25178VBFeCwHZS0w6nwNYLxNJD29jwAUHZ7A3lulcs5Y_PWtiED1YyfLZc-qzIUvblKuTamWI7zpxo3Tv8g1x35pBipfsTAvZPUrSbMo8" mode="aspectFill"></image>
-
-			<!-- 浮动统计覆盖层 -->
-			<view class="stats-overlay">
-				<view class="stat-item">
-					<view class="stat-icon">
-						<text>🧭</text>
-					</view>
-					<view class="stat-content">
-						<text class="stat-label">剩余距离</text>
-						<text class="stat-value primary">1.2 km</text>
-					</view>
+		<block v-else>
+			<!-- 状态追踪器 -->
+			<view class="status-tracker">
+				<view class="progress-line">
+					<view class="progress-bar" :style="{ width: progressWidth }"></view>
 				</view>
-				<view class="stat-divider"></view>
-				<view class="stat-item">
-					<text class="stat-label">预计送达</text>
-					<text class="stat-value">14:25</text>
+
+				<!-- 步骤1：已接单 -->
+				<view class="step">
+					<view class="step-circle" :class="stepClass(0)">
+						<text class="step-icon">✓</text>
+					</view>
+					<text class="step-label" :class="stepClass(0) === 'active' ? 'active' : ''">已接单</text>
+				</view>
+
+				<!-- 步骤2：已取货 -->
+				<view class="step">
+					<view class="step-circle" :class="stepClass(1)">
+						<text class="step-icon">📦</text>
+					</view>
+					<text class="step-label" :class="stepClass(1) === 'active' ? 'active' : ''">已取货</text>
+				</view>
+
+				<!-- 步骤3：配送中 -->
+				<view class="step">
+					<view class="step-circle" :class="stepClass(2)">
+						<text class="step-icon">🚚</text>
+					</view>
+					<text class="step-label" :class="stepClass(2) === 'active' ? 'active' : ''">配送中</text>
+				</view>
+
+				<!-- 步骤4：待送达 -->
+				<view class="step">
+					<view class="step-circle" :class="stepClass(3)">
+						<text class="step-icon">🚩</text>
+					</view>
+					<text class="step-label" :class="stepClass(3) === 'active' ? 'active' : ''">待送达</text>
 				</view>
 			</view>
-		</view>
 
-		<!-- 订单信息卡片 -->
-		<view class="order-info-card">
-			<!-- 取货信息 -->
-			<view class="info-item">
-				<view class="info-icons">
-					<view class="info-dot secondary"></view>
-					<view class="info-line"></view>
-				</view>
-				<view class="info-content">
-					<view class="info-header">
-						<text class="info-label secondary">取货点</text>
-						<view class="contact-btn" @click="callSender">
-							<text class="contact-icon">📞</text>
-							<text class="contact-text">联系发货人</text>
+			<!-- 地图视图 -->
+			<view class="map-view">
+				<image class="map-image" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_JzEKN-GssBGh_NIEVe_yag59_hUMViKUiJX763elGTdt32nGGsi195QiOc8EtAQ5J7DLYPS7Lm88P-tnJHpH0KyFKQ7umo25NEoKr-eHxvy0GTVrz6f4uQuribMUgByZKzo_2yLPRy7Am-a3wfm4ACh2etFPQbxWTM_25178VBFeCwHZS0w6nwNYLxNJD29jwAUHZ7A3lulcs5Y_PWtiED1YyfLZc-qzIUvblKuTamWI7zpxo3Tv8g1x35pBipfsTAvZPUrSbMo8" mode="aspectFill"></image>
+
+				<!-- 浮动统计覆盖层 -->
+				<view class="stats-overlay">
+					<view class="stat-item">
+						<view class="stat-icon">
+							<text>🧭</text>
+						</view>
+						<view class="stat-content">
+							<text class="stat-label">剩余距离</text>
+							<text class="stat-value primary">1.2 km</text>
 						</view>
 					</view>
-					<text class="info-title">徐家汇中心 A座 1502</text>
-					<text class="info-desc">上海市徐汇区虹桥路1号</text>
+					<view class="stat-divider"></view>
+					<view class="stat-item">
+						<text class="stat-label">预计送达</text>
+						<text class="stat-value">14:25</text>
+					</view>
 				</view>
 			</view>
 
-			<!-- 送货信息 -->
-			<view class="info-item">
-				<view class="info-icons">
-					<view class="info-dot primary"></view>
+			<!-- 订单信息卡片 -->
+			<view class="order-info-card">
+				<!-- 取货信息 -->
+				<view class="info-item">
+					<view class="info-icons">
+						<view class="info-dot secondary"></view>
+						<view class="info-line"></view>
+					</view>
+					<view class="info-content">
+						<view class="info-header">
+							<text class="info-label secondary">取货点</text>
+							<view class="contact-btn" @click="callSender">
+								<text class="contact-icon">📞</text>
+								<text class="contact-text">联系发货人</text>
+							</view>
+						</view>
+						<text class="info-title" v-if="order.order_type === 'send'">{{ order.pickup_address }}</text>
+						<text class="info-title" v-else>{{ order.purchase_mode === 'near' ? '就近购买' : '指定地址' }}</text>
+					</view>
 				</view>
-				<view class="info-content">
-					<view class="info-header">
-						<text class="info-label primary">送货点</text>
-						<view class="contact-btn" @click="callReceiver">
-							<text class="contact-icon">📞</text>
-							<text class="contact-text">联系收货人</text>
+
+				<!-- 送货信息 -->
+				<view class="info-item">
+					<view class="info-icons">
+						<view class="info-dot primary"></view>
+					</view>
+					<view class="info-content">
+						<view class="info-header">
+							<text class="info-label primary">送货点</text>
+							<view class="contact-btn" @click="callReceiver">
+								<text class="contact-icon">📞</text>
+								<text class="contact-text">联系收货人</text>
+							</view>
+						</view>
+						<text class="info-title">{{ order.delivery_address }}</text>
+					</view>
+				</view>
+			</view>
+
+			<!-- 订单详情列表 -->
+			<view class="details-section">
+				<view class="details-card">
+					<text class="details-title">订单详情</text>
+					<view class="details-list">
+						<view class="detail-row">
+							<text class="detail-label">订单编号</text>
+							<text class="detail-value">{{ order._id }}</text>
+						</view>
+						<view class="detail-row" v-if="order.order_type === 'send'">
+							<text class="detail-label">物品类型</text>
+							<text class="detail-value">{{ order.item_type }}{{ order.item_weight ? ' (约' + order.item_weight + 'kg)' : '' }}</text>
+						</view>
+						<view class="detail-row" v-else-if="order.order_type === 'buy'">
+							<text class="detail-label">商品描述</text>
+							<text class="detail-value">{{ order.item_description }}</text>
+						</view>
+						<view class="detail-row last">
+							<text class="detail-label">备注信息</text>
+							<text class="detail-value error">{{ order.remark }}</text>
 						</view>
 					</view>
-					<text class="info-title">嘉里华庭 2号楼 603</text>
-					<text class="info-desc">上海市长宁区华山路1038号</text>
 				</view>
 			</view>
-		</view>
 
-		<!-- 订单详情列表 -->
-		<view class="details-section">
-			<view class="details-card">
-				<text class="details-title">订单详情</text>
-				<view class="details-list">
-					<view class="detail-row">
-						<text class="detail-label">订单编号</text>
-						<text class="detail-value">SH202310240092</text>
-					</view>
-					<view class="detail-row">
-						<text class="detail-label">物品类型</text>
-						<text class="detail-value">生鲜食品 (约3.5kg)</text>
-					</view>
-					<view class="detail-row last">
-						<text class="detail-label">备注信息</text>
-						<text class="detail-value error">请放于门口储物柜，敲门告知</text>
-					</view>
+			<!-- 底部操作栏 -->
+			<view class="bottom-bar" v-if="order.status !== 'completed'">
+				<view class="photo-button" @click="takePhoto">
+					<text class="button-icon">📷</text>
+					<text class="button-text">拍照反馈</text>
+				</view>
+				<view v-if="order.status === 'accepted'" class="confirm-button" @click="startDelivery">
+					<text class="button-text">开始配送</text>
+					<text class="button-icon">🚀</text>
+					<view class="button-flash"></view>
+				</view>
+				<view v-else-if="order.status === 'in_progress'" class="confirm-button" @click="confirmDelivery">
+					<text class="button-text">确认送达</text>
+					<text class="button-icon">✅</text>
+					<view class="button-flash"></view>
 				</view>
 			</view>
-		</view>
-
-		<!-- 底部操作栏 -->
-		<view class="bottom-bar">
-			<view class="photo-button" @click="takePhoto">
-				<text class="button-icon">📷</text>
-				<text class="button-text">拍照反馈</text>
-			</view>
-			<view class="confirm-button" @click="confirmDelivery">
-				<text class="button-text">确认送达</text>
-				<text class="button-icon">✅</text>
-				<view class="button-flash"></view>
-			</view>
-		</view>
+		</block>
 	</view>
 </template>
 
 <script>
+import { getRiderId } from '@/common/uid.js'
+
 export default {
 	data() {
 		return {
-			progressWidth: '66%'
+			orderId: '',
+			order: {},
+			loading: true
 		}
 	},
+	computed: {
+		progressWidth() {
+			const map = { accepted: '33%', in_progress: '66%', completed: '100%' }
+			return map[this.order.status] || '0%'
+		}
+	},
+	onLoad(options) {
+		this.orderId = options.id
+		this.loadOrderDetail()
+	},
 	methods: {
+		async loadOrderDetail() {
+			this.loading = true
+			uni.showLoading({ title: '加载中...' })
+			try {
+				const getOrder = uniCloud.importObject('get-order')
+				const res = await getOrder.getOrderDetail({ orderId: this.orderId })
+				if (res.errCode === 0) {
+					this.order = res.order || {}
+				} else {
+					uni.showToast({ title: res.errMsg || '加载失败', icon: 'none' })
+				}
+			} catch (e) {
+				uni.showToast({ title: '加载失败', icon: 'none' })
+			} finally {
+				uni.hideLoading()
+				this.loading = false
+			}
+		},
+		stepClass(index) {
+			const s = this.order.status
+			if (s === 'completed') return 'completed'
+			if (s === 'accepted') {
+				return index === 0 ? 'completed' : ''
+			}
+			if (s === 'in_progress') {
+				if (index <= 1) return 'completed'
+				if (index === 2) return 'active'
+				return ''
+			}
+			return ''
+		},
 		callSender() {
 			uni.makePhoneCall({
 				phoneNumber: '1234567890'
-			});
+			})
 		},
 		callReceiver() {
 			uni.makePhoneCall({
 				phoneNumber: '0987654321'
-			});
+			})
 		},
 		takePhoto() {
 			uni.chooseImage({
@@ -165,23 +225,51 @@ export default {
 					uni.showToast({
 						title: '照片已保存',
 						icon: 'success'
-					});
+					})
 				}
-			});
+			})
 		},
-		confirmDelivery() {
-			uni.showLoading({
-				title: '正在提交...'
-			});
-
-			setTimeout(() => {
-				uni.hideLoading();
-				this.progressWidth = '100%';
-				uni.showToast({
-					title: '送达成功',
-					icon: 'success'
-				});
-			}, 1500);
+		async startDelivery() {
+			uni.showLoading({ title: '提交中...' })
+			try {
+				const getOrder = uniCloud.importObject('get-order')
+				const res = await getOrder.updateStatus({
+					orderId: this.order._id,
+					status: 'in_progress',
+					riderId: getRiderId()
+				})
+				if (res.errCode === 0) {
+					this.order.status = 'in_progress'
+					uni.showToast({ title: '状态更新成功', icon: 'success' })
+				} else {
+					uni.showToast({ title: res.errMsg || '操作失败', icon: 'none' })
+				}
+			} catch (e) {
+				uni.showToast({ title: '操作失败', icon: 'none' })
+			} finally {
+				uni.hideLoading()
+			}
+		},
+		async confirmDelivery() {
+			uni.showLoading({ title: '正在提交...' })
+			try {
+				const getOrder = uniCloud.importObject('get-order')
+				const res = await getOrder.updateStatus({
+					orderId: this.order._id,
+					status: 'completed',
+					riderId: getRiderId()
+				})
+				if (res.errCode === 0) {
+					this.order.status = 'completed'
+					uni.showToast({ title: '送达成功', icon: 'success' })
+				} else {
+					uni.showToast({ title: res.errMsg || '操作失败', icon: 'none' })
+				}
+			} catch (e) {
+				uni.showToast({ title: '操作失败', icon: 'none' })
+			} finally {
+				uni.hideLoading()
+			}
 		}
 	}
 }

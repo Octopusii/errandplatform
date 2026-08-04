@@ -30,40 +30,53 @@
 		<!-- 统计横幅 -->
 		<view class="summary-banner">
 			<view class="summary-item">
-				<text class="summary-label">今日已配送</text>
+				<text class="summary-label">已完成订单</text>
 				<view class="summary-value">
-					<text class="summary-number">12</text>
+					<text class="summary-number">{{ completedCount }}</text>
 					<text class="summary-unit">单</text>
 				</view>
 			</view>
 			<view class="summary-item">
-				<text class="summary-label">当前准时率</text>
-				<text class="summary-rate">99.8%</text>
+				<text class="summary-label">进行中订单</text>
+				<view class="summary-value">
+					<text class="summary-number">{{ ongoingCount }}</text>
+					<text class="summary-unit">单</text>
+				</view>
 			</view>
 		</view>
 
+		<!-- 加载中 -->
+		<view class="empty-state" v-if="loading">
+			<text class="empty-title">加载中...</text>
+		</view>
+
 		<!-- 订单列表 -->
-		<view class="orders-list" v-if="currentTab === 'ongoing'">
-			<!-- 进行中的订单1：待取货 -->
-			<view class="order-card" @click="navigateToDetail('ORD-2023082401')">
+		<view class="orders-list" v-else-if="filteredOrders.length > 0">
+			<view
+				class="order-card"
+				v-for="order in filteredOrders"
+				:key="order._id"
+				@click="navigateToDetail(order)"
+			>
 				<view class="card-header">
 					<view class="header-left">
-						<text class="order-id">订单号: ORD-2023082401</text>
-						<view class="status-badge status-picking">
-							<view class="status-dot"></view>
-							<text>待取货</text>
+						<text class="order-id">订单号: {{ getOrderNo(order._id) }}</text>
+						<view class="status-badge" :class="getStatusClass(order.status)">
+							<view class="status-dot" v-if="order.status === 'accepted' || order.status === 'in_progress'"></view>
+							<text>{{ getStatusText(order.status) }}</text>
 						</view>
 					</view>
 					<view class="header-right">
-						<text class="delivery-time">12:45</text>
-						<text class="delivery-label">预计送达</text>
+						<text class="order-type-tag" :class="order.order_type === 'send' ? 'type-send' : 'type-buy'">
+							{{ order.order_type === 'send' ? '帮我送' : '帮我买' }}
+						</text>
 					</view>
 				</view>
 
 				<view class="route-section">
 					<view class="route-icons">
-						<view class="icon-circle icon-secondary">
-							<text>🏪</text>
+						<view class="icon-circle" :class="order.order_type === 'send' ? 'icon-secondary' : 'icon-buy'">
+							<text>{{ order.order_type === 'send' ? '📦' : '🛒' }}</text>
 						</view>
 						<view class="route-line"></view>
 						<view class="icon-circle icon-primary">
@@ -72,83 +85,26 @@
 					</view>
 					<view class="route-details">
 						<view class="route-item">
-							<text class="route-title">王记手工牛肉面 (万象城店)</text>
-							<text class="route-desc">距离您 800m</text>
+							<text class="route-title">{{ getRouteStart(order) }}</text>
 						</view>
 						<view class="route-item">
-							<text class="route-title">翡翠天御 7栋 2单元 1402</text>
-							<text class="route-desc">配送距离 2.4km</text>
+							<text class="route-title">{{ order.delivery_address || '—' }}</text>
 						</view>
 					</view>
 				</view>
 
-				<view class="action-section">
-					<view class="contact-buttons">
-						<view class="contact-btn" @click.stop="callMerchant">
-							<text class="contact-icon">📞</text>
-							<text class="contact-text">商家</text>
-						</view>
-						<view class="contact-btn" @click.stop="callCustomer">
-							<text class="contact-icon">💬</text>
-							<text class="contact-text">客户</text>
-						</view>
+				<view class="order-footer">
+					<text class="order-time">{{ formatTime(order.create_time) }}</text>
+					<view class="order-price">
+						<text class="price-label">配送费</text>
+						<text class="price-value">¥{{ order.price || 0 }}</text>
 					</view>
-					<view class="action-btn">到店取货</view>
-				</view>
-			</view>
-
-			<!-- 进行中的订单2：配送中 -->
-			<view class="order-card" @click="navigateToDetail('ORD-2023082402')">
-				<view class="card-header">
-					<view class="header-left">
-						<text class="order-id">订单号: ORD-2023082402</text>
-						<view class="status-badge status-delivering">
-							<view class="status-dot"></view>
-							<text>配送中</text>
-						</view>
-					</view>
-					<view class="header-right">
-						<text class="delivery-time urgent">08:20</text>
-						<text class="delivery-label">预计送达</text>
-					</view>
-				</view>
-
-				<view class="route-section">
-					<view class="route-icons">
-						<view class="icon-circle icon-secondary completed">
-							<text>✅</text>
-						</view>
-						<view class="route-line"></view>
-						<view class="icon-circle icon-primary">
-							<text>📍</text>
-						</view>
-					</view>
-					<view class="route-details">
-						<view class="route-item completed">
-							<text class="route-title">星巴克咖啡 (嘉里中心店)</text>
-							<text class="route-desc">已取货</text>
-						</view>
-						<view class="route-item">
-							<text class="route-title">高新科技园 T3 栋 12层 1205</text>
-							<text class="route-desc">距离终点 1.2km</text>
-						</view>
-					</view>
-				</view>
-
-				<view class="action-section">
-					<view class="contact-buttons">
-						<view class="contact-btn" @click.stop="callCustomer">
-							<text class="contact-icon">💬</text>
-							<text class="contact-text">联系客户</text>
-						</view>
-					</view>
-					<view class="action-btn secondary">确认送达</view>
 				</view>
 			</view>
 		</view>
 
 		<!-- 空状态 -->
-		<view class="empty-state" v-if="currentTab !== 'ongoing'">
+		<view class="empty-state" v-else>
 			<view class="empty-icon">📥</view>
 			<view class="empty-content">
 				<text class="empty-title">暂无相关订单</text>
@@ -157,7 +113,7 @@
 		</view>
 
 		<!-- 服务时长监控 -->
-		<view class="stats-card">
+		<view class="stats-card" v-if="!loading && filteredOrders.length > 0">
 			<view class="stats-header">
 				<text class="stats-title">服务时长监控</text>
 				<text class="stats-period">今日</text>
@@ -180,30 +136,107 @@
 </template>
 
 <script>
+import { getRiderId } from '@/common/uid.js'
+
 export default {
 	data() {
 		return {
-			currentTab: 'ongoing'
+			currentTab: 'ongoing',
+			orders: [],
+			loading: false
 		}
 	},
+	computed: {
+		filteredOrders() {
+			const statusMap = {
+				ongoing: ['accepted', 'in_progress'],
+				completed: ['completed'],
+				cancelled: ['cancelled']
+			}
+			const filter = statusMap[this.currentTab]
+			return this.orders.filter(o => filter.includes(o.status))
+		},
+		ongoingCount() {
+			return this.orders.filter(o => ['accepted', 'in_progress'].includes(o.status)).length
+		},
+		completedCount() {
+			return this.orders.filter(o => o.status === 'completed').length
+		}
+	},
+	onShow() {
+		this.loadOrders()
+	},
 	methods: {
+		async loadOrders() {
+			this.loading = true
+			uni.showLoading({ title: '加载中...' })
+			try {
+				const getOrder = uniCloud.importObject('get-order')
+				const res = await getOrder.getRiderOrders({ riderId: getRiderId() })
+				if (res.errCode === 0) {
+					this.orders = res.list || []
+				} else {
+					uni.showToast({ title: res.errMsg || '加载失败', icon: 'none' })
+				}
+			} catch (e) {
+				uni.showToast({ title: '加载失败', icon: 'none' })
+			} finally {
+				uni.hideLoading()
+				this.loading = false
+			}
+		},
 		switchTab(tab) {
-			this.currentTab = tab;
+			this.currentTab = tab
 		},
-		navigateToDetail(orderId) {
-			uni.navigateTo({
-				url: `/pages/order-executing/index?id=${orderId}`
-			});
+		navigateToDetail(order) {
+			if (order.status === 'accepted' || order.status === 'in_progress') {
+				uni.navigateTo({
+					url: '/pages/order-executing/index?id=' + order._id
+				})
+			} else {
+				const url = order.order_type === 'send'
+					? '/pages/order-detail/send?id=' + order._id
+					: '/pages/order-detail/buy?id=' + order._id
+				uni.navigateTo({ url })
+			}
 		},
-		callMerchant() {
-			uni.makePhoneCall({
-				phoneNumber: '123'
-			});
+		getOrderNo(id) {
+			if (!id) return ''
+			return 'RD' + id.slice(-9)
 		},
-		callCustomer() {
-			uni.makePhoneCall({
-				phoneNumber: '456'
-			});
+		getRouteStart(order) {
+			if (order.order_type === 'send') {
+				return order.pickup_address || '—'
+			}
+			return order.item_description || '—'
+		},
+		getStatusText(status) {
+			const map = {
+				pending: '待接单',
+				accepted: '已接单',
+				in_progress: '配送中',
+				completed: '已完成',
+				cancelled: '已取消'
+			}
+			return map[status] || status
+		},
+		getStatusClass(status) {
+			const map = {
+				accepted: 'status-picking',
+				in_progress: 'status-delivering',
+				completed: 'status-done',
+				cancelled: 'status-cancelled'
+			}
+			return map[status] || ''
+		},
+		formatTime(ts) {
+			if (!ts) return ''
+			const d = new Date(ts)
+			const m = String(d.getMonth() + 1).padStart(2, '0')
+			const day = String(d.getDate()).padStart(2, '0')
+			const h = String(d.getHours()).padStart(2, '0')
+			const min = String(d.getMinutes()).padStart(2, '0')
+			return `${m}-${day} ${h}:${min}`
 		}
 	}
 }
@@ -306,13 +339,6 @@ export default {
 	color: #c1cfff;
 }
 
-.summary-rate {
-	font-size: 18px;
-	font-weight: 600;
-	color: #c1cfff;
-	line-height: 24px;
-}
-
 .orders-list {
 	display: flex;
 	flex-direction: column;
@@ -366,6 +392,14 @@ export default {
 	color: #003b9a;
 }
 
+.status-badge.status-done {
+	color: #10b981;
+}
+
+.status-badge.status-cancelled {
+	color: #727687;
+}
+
 .status-dot {
 	width: 8px;
 	height: 8px;
@@ -406,19 +440,21 @@ export default {
 	align-items: flex-end;
 }
 
-.delivery-time {
-	font-size: 18px;
-	font-weight: 600;
-	color: #003b9a;
+.order-type-tag {
+	font-size: 11px;
+	font-weight: 500;
+	padding: 2px 8px;
+	border-radius: 9999px;
 }
 
-.delivery-time.urgent {
-	color: #ba1a1a;
+.type-send {
+	background-color: #0050cb;
+	color: #c1cfff;
 }
 
-.delivery-label {
-	font-size: 12px;
-	color: #434654;
+.type-buy {
+	background-color: #e0e3e4;
+	color: #434748;
 }
 
 .route-section {
@@ -449,12 +485,12 @@ export default {
 	background-color: #d2e1fa;
 }
 
-.icon-primary {
-	background-color: #dae1ff;
+.icon-buy {
+	background-color: #e0e3e4;
 }
 
-.icon-circle.completed {
-	opacity: 0.4;
+.icon-primary {
+	background-color: #dae1ff;
 }
 
 .route-line {
@@ -477,78 +513,45 @@ export default {
 	gap: 4px;
 }
 
-.route-item.completed {
-	opacity: 0.4;
-}
-
 .route-title {
-	font-size: 18px;
-	font-weight: 600;
+	font-size: 14px;
+	font-weight: 500;
 	color: #191b23;
-	line-height: 24px;
+	line-height: 20px;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
 
-.route-desc {
-	font-size: 14px;
-	color: #434654;
-	line-height: 20px;
-}
-
-.action-section {
+.order-footer {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	margin-top: 8px;
-	padding-top: 16px;
+	padding-top: 12px;
 	border-top: 1px solid rgba(195, 198, 214, 0.3);
 }
 
-.contact-buttons {
-	display: flex;
-	gap: 16px;
-}
-
-.contact-btn {
-	display: flex;
-	align-items: center;
-	gap: 4px;
-	padding: 6px 12px;
-	border-radius: 9999px;
-	background-color: #e7e7f2;
+.order-time {
+	font-size: 12px;
 	color: #434654;
+}
+
+.order-price {
+	display: flex;
+	align-items: baseline;
+	gap: 4px;
+}
+
+.price-label {
 	font-size: 12px;
-	transition: all 0.2s;
+	color: #434654;
 }
 
-.contact-btn:active {
-	background-color: #d2e1fa;
-	color: #556379;
-}
-
-.contact-icon {
+.price-value {
 	font-size: 18px;
-}
-
-.contact-text {
-	font-size: 12px;
-}
-
-.action-btn {
-	background-color: #003b9a;
-	color: #ffffff;
-	padding: 8px 16px;
-	border-radius: 8px;
-	font-size: 12px;
-	font-weight: 500;
-	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-.action-btn.secondary {
-	background-color: #0050cb;
-	color: #c1cfff;
+	font-weight: 700;
+	color: #003b9a;
 }
 
 .empty-state {

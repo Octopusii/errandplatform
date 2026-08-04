@@ -3,9 +3,7 @@
 		<!-- 成功动画部分 -->
 		<view class="success-section">
 			<view class="success-icon-wrapper">
-				<!-- 动画脉冲圈 -->
 				<view class="pulse-ring"></view>
-				<!-- 成功图标 -->
 				<view class="success-icon">
 					<text class="icon-emoji">✅</text>
 				</view>
@@ -14,44 +12,72 @@
 			<text class="success-desc">请尽快前往取货，以免订单超时</text>
 		</view>
 
+		<!-- 加载中 -->
+		<view class="loading-state" v-if="loading">
+			<text class="loading-text">加载订单信息...</text>
+		</view>
+
 		<!-- 订单预览卡片 -->
-		<view class="order-card">
+		<view class="order-card" v-else-if="order._id">
 			<view class="card-header">
 				<view class="card-left">
-					<view class="status-badge">待取货</view>
-					<text class="merchant-name">星巴克 (南山科技园店)</text>
+					<view class="status-badge">{{ getStatusText(order.status) }}</view>
+					<text class="merchant-name">{{ getOrderTitle(order) }}</text>
 				</view>
 				<view class="card-right">
 					<text class="earning-label">预计配送收入</text>
-					<text class="earning-amount">¥18.50</text>
+					<text class="earning-amount">¥{{ order.price || 0 }}</text>
 				</view>
 			</view>
 
 			<view class="card-details">
+				<!-- 取货地址(send) / 采购商品(buy) -->
 				<view class="detail-item">
-					<text class="detail-icon">📍</text>
+					<text class="detail-icon">{{ order.order_type === 'send' ? '📦' : '🛒' }}</text>
 					<view class="detail-content">
-						<text class="detail-text">广东省深圳市南山区科苑路15号</text>
-						<text class="detail-subtext">距离您 850m</text>
+						<text class="detail-text">
+							{{ order.order_type === 'send' ? (order.pickup_address || '—') : (order.item_description || '—') }}
+						</text>
+						<text class="detail-subtext" v-if="order.order_type === 'send' && order.item_type">
+							{{ order.item_type }}<text v-if="order.item_weight"> · {{ order.item_weight }}kg</text>
+						</text>
+						<text class="detail-subtext" v-if="order.order_type === 'buy' && order.estimated_price">
+							预估金额 ¥{{ order.estimated_price }}
+						</text>
 					</view>
 				</view>
 
+				<!-- 送货地址 -->
 				<view class="detail-item">
+					<text class="detail-icon">📍</text>
+					<view class="detail-content">
+						<text class="detail-text">{{ order.delivery_address || '—' }}</text>
+					</view>
+				</view>
+
+				<!-- 取件时间(send) -->
+				<view class="detail-item" v-if="order.order_type === 'send' && order.pickup_time">
 					<text class="detail-icon">⏰</text>
-					<text class="detail-text">请在 <text class="highlight">15:30</text> 前完成取货</text>
+					<text class="detail-text">请在 <text class="highlight">{{ order.pickup_time }}</text> 前完成取货</text>
+				</view>
+
+				<!-- 备注 -->
+				<view class="detail-item" v-if="order.remark">
+					<text class="detail-icon">ℹ️</text>
+					<text class="detail-text">备注：{{ order.remark }}</text>
 				</view>
 			</view>
 
 			<!-- 进度条 -->
 			<view class="progress-bar">
-				<view class="progress-fill active"></view>
-				<view class="progress-fill"></view>
-				<view class="progress-fill"></view>
+				<view class="progress-fill" :class="{ 'active': isStepActive(1) }"></view>
+				<view class="progress-fill" :class="{ 'active': isStepActive(2) }"></view>
+				<view class="progress-fill" :class="{ 'active': isStepActive(3) }"></view>
 			</view>
 		</view>
 
 		<!-- 操作按钮 -->
-		<view class="action-buttons">
+		<view class="action-buttons" v-if="order._id">
 			<view class="primary-button" @click="navigateToPickup">
 				<text class="button-icon">🧭</text>
 				<text class="button-text">立即前往取货</text>
@@ -62,34 +88,85 @@
 		</view>
 
 		<!-- 提示信息 -->
-		<view class="tip-info">
+		<view class="tip-info" v-if="order._id">
 			<text class="tip-icon">ℹ️</text>
-			<text class="tip-text">取货时请核对订单号：#8829</text>
+			<text class="tip-text">取货时请核对订单号：{{ getOrderNo(order._id) }}</text>
 		</view>
 	</view>
 </template>
 
 <script>
 export default {
+	data() {
+		return {
+			orderId: '',
+			order: {},
+			loading: false
+		}
+	},
+	onLoad(options) {
+		this.orderId = options.id || ''
+		this.loadOrderDetail()
+	},
 	methods: {
+		async loadOrderDetail() {
+			if (!this.orderId) {
+				uni.showToast({ title: '订单ID不能为空', icon: 'none' })
+				return
+			}
+			this.loading = true
+			uni.showLoading({ title: '加载中...' })
+			try {
+				const getOrder = uniCloud.importObject('get-order')
+				const res = await getOrder.getOrderDetail({ orderId: this.orderId })
+				if (res.errCode === 0) {
+					this.order = res.order || {}
+				} else {
+					uni.showToast({ title: res.errMsg || '加载失败', icon: 'none' })
+				}
+			} catch (e) {
+				uni.showToast({ title: '加载失败', icon: 'none' })
+			} finally {
+				uni.hideLoading()
+				this.loading = false
+			}
+		},
 		navigateToPickup() {
-			// 这里应该打开地图导航
-			uni.showLoading({
-				title: '正在开启地图...'
-			});
-
-			setTimeout(() => {
-				uni.hideLoading();
-				// 实际应该跳转到地图页面
-				uni.navigateTo({
-					url: '/pages/order-executing/index'
-				});
-			}, 2000);
+			uni.navigateTo({
+				url: '/pages/order-executing/index?id=' + this.orderId
+			})
 		},
 		viewOrderDetail() {
 			uni.navigateTo({
-				url: '/pages/order-executing/index'
-			});
+				url: '/pages/order-executing/index?id=' + this.orderId
+			})
+		},
+		getStatusText(status) {
+			const map = {
+				pending: '待接单',
+				accepted: '已接单',
+				in_progress: '配送中',
+				completed: '已完成',
+				cancelled: '已取消'
+			}
+			return map[status] || '已接单'
+		},
+		getOrderTitle(order) {
+			if (order.order_type === 'send') {
+				return order.pickup_address || '帮我送订单'
+			}
+			return order.item_description || '帮我买订单'
+		},
+		getOrderNo(id) {
+			if (!id) return ''
+			return 'RD' + id.slice(-9)
+		},
+		isStepActive(step) {
+			const status = this.order.status
+			if (step === 1) return ['accepted', 'in_progress', 'completed'].includes(status)
+			if (step === 2) return ['in_progress', 'completed'].includes(status)
+			if (step === 3) return status === 'completed'
+			return false
 		}
 	}
 }
@@ -170,6 +247,17 @@ export default {
 
 .success-desc {
 	font-size: 16px;
+	color: #434654;
+}
+
+.loading-state {
+	display: flex;
+	justify-content: center;
+	padding: 40px 0;
+}
+
+.loading-text {
+	font-size: 14px;
 	color: #434654;
 }
 
