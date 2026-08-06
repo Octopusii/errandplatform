@@ -26,14 +26,14 @@ const validator = {
         "range": [
           {
             "value": "send",
-            "text": "send"
+            "text": "帮我送"
           },
           {
             "value": "buy",
-            "text": "buy"
+            "text": "帮我买"
           }
         ]
-      }
+      },
     ],
     "title": "订单类型",
     "label": "订单类型"
@@ -47,23 +47,23 @@ const validator = {
         "range": [
           {
             "value": "pending",
-            "text": "pending"
+            "text": "待接单"
           },
           {
             "value": "accepted",
-            "text": "accepted"
+            "text": "已接单"
           },
           {
             "value": "in_progress",
-            "text": "in_progress"
+            "text": "配送中"
           },
           {
             "value": "completed",
-            "text": "completed"
+            "text": "已完成"
           },
           {
             "value": "cancelled",
-            "text": "cancelled"
+            "text": "已取消"
           }
         ]
       }
@@ -201,11 +201,11 @@ const validator = {
         "range": [
           {
             "value": "near",
-            "text": "near"
+            "text": "就近购买"
           },
           {
             "value": "fixed",
-            "text": "fixed"
+            "text": "指定商家"
           }
         ]
       }
@@ -217,19 +217,19 @@ const validator = {
 
 const enumConverter = {
   "order_type_valuetotext": {
-    "send": "send",
-    "buy": "buy"
+    "send": "帮我送",
+    "buy": "帮我买"
   },
   "status_valuetotext": {
-    "pending": "pending",
-    "accepted": "accepted",
-    "in_progress": "in_progress",
-    "completed": "completed",
-    "cancelled": "cancelled"
+    "pending": "待接单",
+    "accepted": "已接单",
+    "in_progress": "配送中",
+    "completed": "已完成",
+    "cancelled": "已取消"
   },
   "purchase_mode_valuetotext": {
-    "near": "near",
-    "fixed": "fixed"
+    "near": "就近购买",
+    "fixed": "指定商家"
   }
 }
 

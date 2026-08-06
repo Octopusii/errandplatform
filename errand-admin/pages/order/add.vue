@@ -108,43 +108,43 @@
           "order_type_localdata": [
             {
               "value": "send",
-              "text": "send"
+              "text": "帮我送"
             },
             {
               "value": "buy",
-              "text": "buy"
+              "text": "帮我买"
             }
           ],
           "status_localdata": [
             {
               "value": "pending",
-              "text": "pending"
+              "text": "待接单"
             },
             {
               "value": "accepted",
-              "text": "accepted"
+              "text": "已接单"
             },
             {
               "value": "in_progress",
-              "text": "in_progress"
+              "text": "配送中"
             },
             {
               "value": "completed",
-              "text": "completed"
+              "text": "已完成"
             },
             {
               "value": "cancelled",
-              "text": "cancelled"
+              "text": "已取消"
             }
           ],
           "purchase_mode_localdata": [
             {
               "value": "near",
-              "text": "near"
+              "text": "就近购买"
             },
             {
               "value": "fixed",
-              "text": "fixed"
+              "text": "指定商家"
             }
           ]
         },

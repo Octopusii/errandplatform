@@ -2,68 +2,81 @@
   <view>
     <view class="uni-header">
       <view class="uni-group">
-        <view class="uni-title"></view>
-        <view class="uni-sub-title"></view>
-      </view>
-      <view class="uni-group">
-        <input class="uni-search" type="text" v-model="query" @confirm="search" placeholder="请输入搜索内容" />
-        <button class="uni-button" type="default" size="mini" @click="search">搜索</button>
-        <button class="uni-button" type="default" size="mini" @click="navigateTo('./add')">新增</button>
-        <button class="uni-button" type="default" size="mini" :disabled="!selectedIndexs.length" @click="delTable">批量删除</button>
-        <download-excel class="hide-on-phone" :fields="exportExcel.fields" :data="exportExcelData" :type="exportExcel.type" :name="exportExcel.filename">
-          <button class="uni-button" type="primary" size="mini">导出 Excel</button>
-        </download-excel>
+        <view class="uni-title">订单管理</view>
       </view>
     </view>
+
     <view class="uni-container">
-      <unicloud-db ref="udb" :collection="collectionList" field="uid,order_type,status,create_time,price,rider_id,rider_name,pickup_address,delivery_address,item_type,item_weight,remark,pickup_time,item_description,estimated_price,delivery_fee,purchase_mode" :where="where" page-data="replace"
-        :orderby="orderby" :getcount="true" :page-size="options.pageSize" :page-current="options.pageCurrent"
-        v-slot:default="{data,pagination,loading,error,options}" :options="options" loadtime="manual" @load="onqueryload">
-        <uni-table ref="table" :loading="loading" :emptyText="error.message || '没有更多数据'" border stripe type="selection" @selection-change="selectionChange">
+      <!-- 状态筛选标签 -->
+      <view class="status-tabs">
+        <view
+          v-for="tab in statusTabs"
+          :key="tab.value"
+          :class="['status-tab', { active: currentStatus === tab.value }]"
+          @click="switchTab(tab.value)"
+        >{{ tab.label }}</view>
+      </view>
+
+      <unicloud-db
+        ref="udb"
+        collection="order"
+        :field="fieldList"
+        :where="queryWhere"
+        page-data="replace"
+        :orderby="orderby"
+        :getcount="true"
+        :page-size="20"
+        :page-current="1"
+        v-slot:default="{ data, pagination, loading, error, options }"
+        :options="options"
+        loadtime="manual"
+        @load="onqueryload"
+      >
+        <uni-table
+          ref="table"
+          :loading="loading"
+          :emptyText="error.message || '暂无订单'"
+          border stripe
+        >
           <uni-tr>
-            <uni-th align="center" filter-type="search" @filter-change="filterChange($event, 'uid')" sortable @sort-change="sortChange($event, 'uid')">用户ID</uni-th>
-            <uni-th align="center" filter-type="select" :filter-data="options.filterData.order_type_localdata" @filter-change="filterChange($event, 'order_type')">订单类型</uni-th>
-            <uni-th align="center" filter-type="select" :filter-data="options.filterData.status_localdata" @filter-change="filterChange($event, 'status')">订单状态</uni-th>
-            <uni-th align="center" filter-type="timestamp" @filter-change="filterChange($event, 'create_time')" sortable @sort-change="sortChange($event, 'create_time')">创建时间</uni-th>
-            <uni-th align="center" filter-type="range" @filter-change="filterChange($event, 'price')" sortable @sort-change="sortChange($event, 'price')">订单价格</uni-th>
-            <uni-th align="center" filter-type="search" @filter-change="filterChange($event, 'rider_id')" sortable @sort-change="sortChange($event, 'rider_id')">骑手ID</uni-th>
-            <uni-th align="center" filter-type="search" @filter-change="filterChange($event, 'rider_name')" sortable @sort-change="sortChange($event, 'rider_name')">骑手姓名</uni-th>
-            <uni-th align="center" filter-type="search" @filter-change="filterChange($event, 'pickup_address')" sortable @sort-change="sortChange($event, 'pickup_address')">取货地址</uni-th>
-            <uni-th align="center" filter-type="search" @filter-change="filterChange($event, 'delivery_address')" sortable @sort-change="sortChange($event, 'delivery_address')">收货地址</uni-th>
-            <uni-th align="center" filter-type="search" @filter-change="filterChange($event, 'item_type')" sortable @sort-change="sortChange($event, 'item_type')">物品种类</uni-th>
-            <uni-th align="center" filter-type="range" @filter-change="filterChange($event, 'item_weight')" sortable @sort-change="sortChange($event, 'item_weight')">物品重量</uni-th>
-            <uni-th align="center" filter-type="search" @filter-change="filterChange($event, 'remark')" sortable @sort-change="sortChange($event, 'remark')">备注</uni-th>
-            <uni-th align="center" filter-type="search" @filter-change="filterChange($event, 'pickup_time')" sortable @sort-change="sortChange($event, 'pickup_time')">取件时间</uni-th>
-            <uni-th align="center" filter-type="search" @filter-change="filterChange($event, 'item_description')" sortable @sort-change="sortChange($event, 'item_description')">物品描述</uni-th>
-            <uni-th align="center" filter-type="range" @filter-change="filterChange($event, 'estimated_price')" sortable @sort-change="sortChange($event, 'estimated_price')">预估商品价格</uni-th>
-            <uni-th align="center" filter-type="range" @filter-change="filterChange($event, 'delivery_fee')" sortable @sort-change="sortChange($event, 'delivery_fee')">预计配送费</uni-th>
-            <uni-th align="center" filter-type="select" :filter-data="options.filterData.purchase_mode_localdata" @filter-change="filterChange($event, 'purchase_mode')">购买模式</uni-th>
-            <uni-th align="center">操作</uni-th>
+            <uni-th align="center" style="width:60px">序号</uni-th>
+            <uni-th align="center" filter-type="search" @filter-change="filterChange($event, 'uid')">用户ID</uni-th>
+            <uni-th align="center" filter-type="select" :filter-data="options.filterData.order_type_localdata" @filter-change="filterChange($event, 'order_type')">类型</uni-th>
+            <uni-th align="center">状态</uni-th>
+            <uni-th align="center" sortable @sort-change="sortChange($event, 'price')">金额</uni-th>
+            <uni-th align="center">骑手</uni-th>
+            <uni-th align="center">取件/取货地址</uni-th>
+            <uni-th align="center">收货地址</uni-th>
+            <uni-th align="center" sortable @sort-change="sortChange($event, 'create_time')">创建时间</uni-th>
+            <uni-th align="center" style="width:200px">操作</uni-th>
           </uni-tr>
-          <uni-tr v-for="(item,index) in data" :key="index">
-            <uni-td align="center">{{item.uid}}</uni-td>
-            <uni-td align="center">{{options.order_type_valuetotext[item.order_type]}}</uni-td>
-            <uni-td align="center">{{options.status_valuetotext[item.status]}}</uni-td>
+          <uni-tr v-for="(item, index) in data" :key="item._id">
+            <uni-td align="center">{{ (pagination.current - 1) * pagination.size + index + 1 }}</uni-td>
+            <uni-td align="center">{{ item.uid }}</uni-td>
+            <uni-td align="center">
+              <uni-tag :text="item.order_type === 'send' ? '帮我送' : '帮我买'" :type="item.order_type === 'send' ? 'primary' : 'success'" size="small"></uni-tag>
+            </uni-td>
+            <uni-td align="center">
+              <uni-tag :text="statusText(item.status)" :type="statusTagType(item.status)" size="small"></uni-tag>
+            </uni-td>
+            <uni-td align="center">¥{{ item.price || 0 }}</uni-td>
+            <uni-td align="center">{{ item.rider_name || '未分配' }}</uni-td>
+            <uni-td align="center" class="td-address">{{ item.pickup_address || item.item_description || '-' }}</uni-td>
+            <uni-td align="center" class="td-address">{{ item.delivery_address || '-' }}</uni-td>
             <uni-td align="center">
               <uni-dateformat :threshold="[0, 0]" :date="item.create_time"></uni-dateformat>
             </uni-td>
-            <uni-td align="center">{{item.price}}</uni-td>
-            <uni-td align="center">{{item.rider_id}}</uni-td>
-            <uni-td align="center">{{item.rider_name}}</uni-td>
-            <uni-td align="center">{{item.pickup_address}}</uni-td>
-            <uni-td align="center">{{item.delivery_address}}</uni-td>
-            <uni-td align="center">{{item.item_type}}</uni-td>
-            <uni-td align="center">{{item.item_weight}}</uni-td>
-            <uni-td align="center">{{item.remark}}</uni-td>
-            <uni-td align="center">{{item.pickup_time}}</uni-td>
-            <uni-td align="center">{{item.item_description}}</uni-td>
-            <uni-td align="center">{{item.estimated_price}}</uni-td>
-            <uni-td align="center">{{item.delivery_fee}}</uni-td>
-            <uni-td align="center">{{options.purchase_mode_valuetotext[item.purchase_mode]}}</uni-td>
             <uni-td align="center">
               <view class="uni-group">
-                <button @click="navigateTo('./edit?id='+item._id, false)" class="uni-button" size="mini" type="primary">修改</button>
-                <button @click="confirmDelete(item._id)" class="uni-button" size="mini" type="warn">删除</button>
+                <button class="uni-button" size="mini" type="primary" @click="goEdit(item._id)">详情</button>
+                <button
+                  v-if="canChangeStatus(item.status)"
+                  class="uni-button"
+                  size="mini"
+                  type="warning"
+                  @click="showStatusModal(item)"
+                >状态</button>
+                <button class="uni-button" size="mini" type="warn" @click="confirmDelete(item._id)">删除</button>
               </view>
             </uni-td>
           </uni-tr>
@@ -73,6 +86,38 @@
         </view>
       </unicloud-db>
     </view>
+
+    <!-- 状态变更弹窗 -->
+    <uni-popup ref="statusPopup" type="center">
+      <view class="popup-content">
+        <view class="popup-title">变更订单状态</view>
+        <view class="popup-body">
+          <view class="current-status">
+            当前状态：<uni-tag :text="statusText(editItem.status)" :type="statusTagType(editItem.status)" size="small"></uni-tag>
+          </view>
+          <view class="status-options">
+            <view
+              v-for="s in nextStatuses"
+              :key="s.value"
+              class="status-option"
+              @click="changeStatus(s.value)"
+            >
+              <uni-tag :text="s.label" :type="s.type" size="normal" customStyle="padding: 8px 20px; cursor: pointer;"></uni-tag>
+            </view>
+          </view>
+          <view class="status-divider">或</view>
+          <view class="rider-assign">
+            <view class="field-label">分配骑手</view>
+            <input class="field-input" v-model="assignRiderName" placeholder="骑手姓名" />
+            <input class="field-input" v-model="assignRiderId" placeholder="骑手ID" />
+            <button class="uni-button" type="primary" size="mini" @click="assignRider">确认分配</button>
+          </view>
+        </view>
+        <view class="popup-footer">
+          <button class="uni-button" size="mini" @click="$refs.statusPopup.close()">关闭</button>
+        </view>
+      </view>
+    </uni-popup>
   </view>
 </template>
 
@@ -80,105 +125,72 @@
   import { enumConverter, filterToWhere } from '../../js_sdk/validator/order.js';
 
   const db = uniCloud.database()
-  
-  // 表查询配置
-  const dbOrderBy = '' // 排序字段
-  const dbSearchFields = [] // 模糊搜索字段，支持模糊搜索的字段列表。联表查询格式: 主表字段名.副表字段名，例如用户表关联角色表 role.role_name
-  // 分页配置
-  const pageSize = 20
-  const pageCurrent = 1
 
-  const orderByMapping = {
-    "ascending": "asc",
-    "descending": "desc"
+  const STATUS_MAP = {
+    pending: '待接单',
+    accepted: '已接单',
+    in_progress: '配送中',
+    completed: '已完成',
+    cancelled: '已取消'
   }
+  const STATUS_TAG = {
+    pending: 'warning',
+    accepted: 'info',
+    in_progress: 'primary',
+    completed: 'success',
+    cancelled: 'danger'
+  }
+  const STATUS_TRANSITION = {
+    pending: ['accepted', 'cancelled'],
+    accepted: ['in_progress', 'cancelled'],
+    in_progress: ['completed', 'cancelled'],
+    completed: [],
+    cancelled: []
+  }
+  const NEXT_STATUS_META = {
+    accepted: { label: '已接单', type: 'info' },
+    in_progress: { label: '配送中', type: 'primary' },
+    completed: { label: '已完成', type: 'success' },
+    cancelled: { label: '已取消', type: 'danger' }
+  }
+  const fieldList = 'uid,order_type,status,create_time,price,rider_id,rider_name,pickup_address,delivery_address,item_description'
 
   export default {
     data() {
       return {
-        collectionList: "order",
-        query: '',
-        where: '',
-        orderby: dbOrderBy,
-        orderByFieldName: "",
-        selectedIndexs: [],
+        fieldList,
+        currentStatus: '',
+        queryWhere: '',
+        orderby: 'create_time desc',
+        statusTabs: [
+          { label: '全部', value: '' },
+          { label: '待接单', value: 'pending' },
+          { label: '已接单', value: 'accepted' },
+          { label: '配送中', value: 'in_progress' },
+          { label: '已完成', value: 'completed' },
+          { label: '已取消', value: 'cancelled' }
+        ],
         options: {
-          pageSize,
-          pageCurrent,
           filterData: {
-            "order_type_localdata": [
-              {
-                "value": "send",
-                "text": "send"
-              },
-              {
-                "value": "buy",
-                "text": "buy"
-              }
-            ],
-            "status_localdata": [
-              {
-                "value": "pending",
-                "text": "pending"
-              },
-              {
-                "value": "accepted",
-                "text": "accepted"
-              },
-              {
-                "value": "in_progress",
-                "text": "in_progress"
-              },
-              {
-                "value": "completed",
-                "text": "completed"
-              },
-              {
-                "value": "cancelled",
-                "text": "cancelled"
-              }
-            ],
-            "purchase_mode_localdata": [
-              {
-                "value": "near",
-                "text": "near"
-              },
-              {
-                "value": "fixed",
-                "text": "fixed"
-              }
+            order_type_localdata: [
+              { value: 'send', text: '帮我送' },
+              { value: 'buy', text: '帮我买' }
             ]
           },
           ...enumConverter
         },
-        imageStyles: {
-          width: 64,
-          height: 64
-        },
-        exportExcel: {
-          "filename": "order.xls",
-          "type": "xls",
-          "fields": {
-            "用户ID": "uid",
-            "订单类型": "order_type",
-            "订单状态": "status",
-            "创建时间": "create_time",
-            "订单价格": "price",
-            "骑手ID": "rider_id",
-            "骑手姓名": "rider_name",
-            "取货地址": "pickup_address",
-            "收货地址": "delivery_address",
-            "物品种类": "item_type",
-            "物品重量": "item_weight",
-            "备注": "remark",
-            "取件时间": "pickup_time",
-            "物品描述": "item_description",
-            "预估商品价格": "estimated_price",
-            "预计配送费": "delivery_fee",
-            "购买模式": "purchase_mode"
-          }
-        },
-        exportExcelData: []
+        _filter: {},
+        editItem: {},
+        assignRiderName: '',
+        assignRiderId: ''
+      }
+    },
+    computed: {
+      nextStatuses() {
+        const current = this.editItem.status
+        if (!current) return []
+        const allowed = STATUS_TRANSITION[current] || []
+        return allowed.map(v => ({ value: v, label: NEXT_STATUS_META[v].label, type: NEXT_STATUS_META[v].type }))
       }
     },
     onLoad() {
@@ -188,101 +200,207 @@
       this.$refs.udb.loadData()
     },
     methods: {
-      onqueryload(data) {
-        this.exportExcelData = data
+      statusText(status) {
+        return STATUS_MAP[status] || status
       },
-      getWhere() {
-        const query = this.query.trim()
-        if (!query) {
-          return ''
+      statusTagType(status) {
+        return STATUS_TAG[status] || 'default'
+      },
+      canChangeStatus(status) {
+        return status !== 'completed' && status !== 'cancelled'
+      },
+      switchTab(status) {
+        this.currentStatus = status
+        if (status) {
+          this.queryWhere = { status }
+        } else {
+          this.queryWhere = ''
         }
-        const queryRe = new RegExp(query, 'i')
-        return dbSearchFields.map(name => queryRe + '.test(' + name + ')').join(' || ')
+        this.$refs.udb.loadData({ clear: true })
       },
-      search() {
-        const newWhere = this.getWhere()
-        this.where = newWhere
-        this.$nextTick(() => {
-          this.loadData()
-        })
-      },
-      loadData(clear = true) {
-        this.$refs.udb.loadData({
-          clear
-        })
-      },
+      onqueryload(data) {},
       onPageChanged(e) {
-        this.selectedIndexs.length = 0
         this.$refs.table.clearSelection()
-        this.$refs.udb.loadData({
-          current: e.current
+        this.$refs.udb.loadData({ current: e.current })
+      },
+      goEdit(id) {
+        uni.navigateTo({
+          url: './edit?id=' + id,
+          events: {
+            refreshData: () => { this.$refs.udb.loadData() }
+          }
         })
       },
-      navigateTo(url, clear) {
-        // clear 表示刷新列表时是否清除页码，true 表示刷新并回到列表第 1 页，默认为 true
-        uni.navigateTo({
-          url,
-          events: {
-            refreshData: () => {
-              this.loadData(clear)
+      confirmDelete(id) {
+        uni.showModal({
+          title: '确认删除',
+          content: '确定要删除该订单吗？此操作不可恢复。',
+          success: (res) => {
+            if (res.confirm) {
+              db.collection('order').doc(id).remove().then(() => {
+                uni.showToast({ title: '删除成功' })
+                this.$refs.udb.loadData()
+              })
             }
           }
         })
       },
-      // 多选处理
-      selectedItems() {
-        var dataList = this.$refs.udb.dataList
-        return this.selectedIndexs.map(i => dataList[i]._id)
+      showStatusModal(item) {
+        this.editItem = item
+        this.assignRiderName = item.rider_name || ''
+        this.assignRiderId = item.rider_id || ''
+        this.$refs.statusPopup.open()
       },
-      // 批量删除
-      delTable() {
-        this.$refs.udb.remove(this.selectedItems(), {
-          success:(res) => {
-            this.$refs.table.clearSelection()
-          }
-        })
+      async changeStatus(newStatus) {
+        uni.showLoading({ mask: true })
+        try {
+          await db.collection('order').doc(this.editItem._id).update({ status: newStatus })
+          uni.showToast({ title: '状态已更新' })
+          this.$refs.statusPopup.close()
+          this.$refs.udb.loadData()
+        } catch (e) {
+          uni.showModal({ content: '更新失败: ' + e.message, showCancel: false })
+        } finally {
+          uni.hideLoading()
+        }
       },
-      // 多选
-      selectionChange(e) {
-        this.selectedIndexs = e.detail.index
-      },
-      confirmDelete(id) {
-        this.$refs.udb.remove(id, {
-          success:(res) => {
-            this.$refs.table.clearSelection()
-          }
-        })
+      async assignRider() {
+        if (!this.assignRiderId && !this.assignRiderName) {
+          uni.showToast({ title: '请输入骑手信息', icon: 'none' })
+          return
+        }
+        uni.showLoading({ mask: true })
+        try {
+          await db.collection('order').doc(this.editItem._id).update({
+            rider_id: this.assignRiderId,
+            rider_name: this.assignRiderName
+          })
+          uni.showToast({ title: '骑手已分配' })
+          this.$refs.statusPopup.close()
+          this.$refs.udb.loadData()
+        } catch (e) {
+          uni.showModal({ content: '操作失败: ' + e.message, showCancel: false })
+        } finally {
+          uni.hideLoading()
+        }
       },
       sortChange(e, name) {
-        this.orderByFieldName = name;
         if (e.order) {
-          this.orderby = name + ' ' + orderByMapping[e.order]
+          this.orderby = name + ' ' + (e.order === 'ascending' ? 'asc' : 'desc')
         } else {
-          this.orderby = ''
+          this.orderby = 'create_time desc'
         }
-        this.$refs.table.clearSelection()
-        this.$nextTick(() => {
-          this.$refs.udb.loadData()
-        })
+        this.$refs.udb.loadData()
       },
       filterChange(e, name) {
-        this._filter[name] = {
-          type: e.filterType,
-          value: e.filter
+        this._filter[name] = { type: e.filterType, value: e.filter }
+        const newWhere = filterToWhere(this._filter, db.command)
+        if (this.currentStatus) {
+          newWhere.status = this.currentStatus
         }
-        let newWhere = filterToWhere(this._filter, db.command)
-        if (Object.keys(newWhere).length) {
-          this.where = newWhere
-        } else {
-          this.where = ''
-        }
-        this.$nextTick(() => {
-          this.$refs.udb.loadData()
-        })
+        this.queryWhere = Object.keys(newWhere).length ? newWhere : (this.currentStatus ? { status: this.currentStatus } : '')
+        this.$nextTick(() => { this.$refs.udb.loadData() })
       }
     }
   }
 </script>
 
 <style>
+  .status-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .status-tab {
+    padding: 6px 16px;
+    border-radius: 4px;
+    background: #f0f2f5;
+    color: #606266;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .status-tab.active {
+    background: #409eff;
+    color: #fff;
+  }
+
+  .td-address {
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .popup-content {
+    background: #fff;
+    border-radius: 8px;
+    width: 400px;
+    max-width: 90vw;
+    overflow: hidden;
+  }
+
+  .popup-title {
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 600;
+    border-bottom: 1px solid #ebeef5;
+  }
+
+  .popup-body {
+    padding: 20px 16px;
+  }
+
+  .current-status {
+    margin-bottom: 16px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .status-options {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .status-option {
+    cursor: pointer;
+  }
+
+  .status-divider {
+    text-align: center;
+    color: #c0c4cc;
+    margin: 16px 0;
+    font-size: 13px;
+  }
+
+  .rider-assign {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .field-label {
+    font-size: 13px;
+    color: #606266;
+    font-weight: 500;
+  }
+
+  .field-input {
+    border: 1px solid #dcdfe6;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .popup-footer {
+    padding: 12px 16px;
+    border-top: 1px solid #ebeef5;
+    text-align: right;
+  }
 </style>

@@ -52,51 +52,52 @@ export default {
   },
   sideBar: {
     // 左侧菜单
-    // 配置静态菜单列表（放置在用户被授权的菜单列表下边）
     staticMenu: [
       {
-        menu_id: 'demo',
-        text: '静态功能演示',
-        icon: 'admin-icons-kaifashili',
+        menu_id: 'dashboard',
+        text: '工作台',
+        icon: 'admin-icons-dashboard',
         url: '',
         children: [
           {
-            menu_id: 'icons',
-            text: '图标',
-            icon: 'admin-icons-icon',
-            value: '/pages/demo/icons/icons',
-          },
-          {
-            menu_id: 'table',
-            text: '表格',
-            icon: 'admin-icons-table',
-            value: '/pages/demo/table/table',
+            menu_id: 'index',
+            text: '数据概览',
+            icon: 'admin-icons-tongjishouye',
+            value: '/pages/index/index',
           },
         ],
       },
       {
-        menu_id: 'admim-doc-pulgin',
-        text: '文档与插件',
-        icon: 'admin-icons-eco',
+        menu_id: 'order-manage',
+        text: '订单管理',
+        icon: 'admin-icons-fl-xitong',
         url: '',
         children: [
           {
-            menu_id: 'admin-doc',
-            icon: 'admin-icons-doc',
-            text: 'uni-admin 框架文档',
-            value: 'https://uniapp.dcloud.net.cn/uniCloud/admin',
+            menu_id: 'order-list',
+            text: '订单列表',
+            icon: 'admin-icons-table',
+            value: '/pages/order/list',
+          },
+        ],
+      },
+      {
+        menu_id: 'user-manage',
+        text: '用户管理',
+        icon: 'admin-icons-user',
+        url: '',
+        children: [
+          {
+            menu_id: 'user-list',
+            text: '用户列表',
+            icon: 'admin-icons-user',
+            value: '/pages/system/user/list',
           },
           {
-            menu_id: 'stat-doc',
-            icon: 'admin-icons-help',
-            text: 'uni 统计教程',
-            value: 'https://uniapp.dcloud.net.cn/uni-stat-v2.html',
-          },
-          {
-            menu_id: 'admin-pulgin',
-            icon: 'admin-icons-pulgin',
-            text: 'uni-admin 插件',
-            value: 'https://ext.dcloud.net.cn/?cat1=7&cat2=74',
+            menu_id: 'rider-list',
+            text: '骑手管理',
+            icon: 'admin-icons-yonghutongji',
+            value: '/pages/rider/list',
           },
         ],
       },

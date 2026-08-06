@@ -1,227 +1,347 @@
 <template>
   <view class="uni-container">
-    <uni-forms ref="form" :model="formData" validateTrigger="bind">
-      <uni-forms-item name="uid" label="用户ID" required>
-        <uni-easyinput placeholder="用户唯一标识" v-model="formData.uid"></uni-easyinput>
-      </uni-forms-item>
-      <uni-forms-item name="order_type" label="订单类型" required>
-        <uni-data-checkbox v-model="formData.order_type" :localdata="formOptions.order_type_localdata"></uni-data-checkbox>
-      </uni-forms-item>
-      <uni-forms-item name="status" label="订单状态">
-        <uni-data-checkbox v-model="formData.status" :localdata="formOptions.status_localdata"></uni-data-checkbox>
-      </uni-forms-item>
-      <uni-forms-item name="create_time" label="创建时间">
-        <uni-datetime-picker return-type="timestamp" v-model="formData.create_time"></uni-datetime-picker>
-      </uni-forms-item>
-      <uni-forms-item name="price" label="订单价格">
-        <uni-easyinput placeholder="订单价格/配送费" type="number" v-model="formData.price"></uni-easyinput>
-      </uni-forms-item>
-      <uni-forms-item name="rider_id" label="骑手ID">
-        <uni-easyinput placeholder="接单骑手ID" v-model="formData.rider_id"></uni-easyinput>
-      </uni-forms-item>
-      <uni-forms-item name="rider_name" label="骑手姓名">
-        <uni-easyinput placeholder="骑手姓名（可选）" v-model="formData.rider_name"></uni-easyinput>
-      </uni-forms-item>
-      <uni-forms-item name="pickup_address" label="取货地址">
-        <uni-easyinput placeholder="取货地址" v-model="formData.pickup_address"></uni-easyinput>
-      </uni-forms-item>
-      <uni-forms-item name="delivery_address" label="收货地址">
-        <uni-easyinput placeholder="送货地址 / 收货地址" v-model="formData.delivery_address"></uni-easyinput>
-      </uni-forms-item>
-      <uni-forms-item name="item_type" label="物品种类">
-        <uni-easyinput placeholder="物品种类（帮我送）" v-model="formData.item_type"></uni-easyinput>
-      </uni-forms-item>
-      <uni-forms-item name="item_weight" label="物品重量">
-        <uni-easyinput placeholder="物品重量(kg)（帮我送）" type="number" v-model="formData.item_weight"></uni-easyinput>
-      </uni-forms-item>
-      <uni-forms-item name="remark" label="备注">
-        <uni-easyinput placeholder="备注信息" v-model="formData.remark"></uni-easyinput>
-      </uni-forms-item>
-      <uni-forms-item name="pickup_time" label="取件时间">
-        <uni-easyinput placeholder="取件时间（帮我送）" v-model="formData.pickup_time"></uni-easyinput>
-      </uni-forms-item>
-      <uni-forms-item name="item_description" label="物品描述">
-        <uni-easyinput placeholder="想买什么（帮我买）" v-model="formData.item_description"></uni-easyinput>
-      </uni-forms-item>
-      <uni-forms-item name="estimated_price" label="预估商品价格">
-        <uni-easyinput placeholder="预估商品价格（帮我买）" type="number" v-model="formData.estimated_price"></uni-easyinput>
-      </uni-forms-item>
-      <uni-forms-item name="delivery_fee" label="预计配送费">
-        <uni-easyinput placeholder="预计配送费（帮我买）" type="number" v-model="formData.delivery_fee"></uni-easyinput>
-      </uni-forms-item>
-      <uni-forms-item name="purchase_mode" label="购买模式">
-        <uni-data-checkbox v-model="formData.purchase_mode" :localdata="formOptions.purchase_mode_localdata"></uni-data-checkbox>
-      </uni-forms-item>
-      <view class="uni-button-group">
-        <button type="primary" class="uni-button" style="width: 100px;" @click="submit">提交</button>
-        <navigator open-type="navigateBack" style="margin-left: 15px;">
-          <button class="uni-button" style="width: 100px;">返回</button>
-        </navigator>
+    <!-- 订单信息卡片 -->
+    <view v-if="order._id" class="order-detail">
+      <view class="card">
+        <view class="card-header">
+          <view class="card-title">订单信息</view>
+          <uni-tag :text="statusText(order.status)" :type="statusTagType(order.status)" size="normal"></uni-tag>
+        </view>
+        <view class="info-grid">
+          <view class="info-item">
+            <view class="info-label">订单ID</view>
+            <view class="info-value">{{ order._id }}</view>
+          </view>
+          <view class="info-item">
+            <view class="info-label">订单类型</view>
+            <view class="info-value">{{ order.order_type === 'send' ? '帮我送' : '帮我买' }}</view>
+          </view>
+          <view class="info-item">
+            <view class="info-label">用户ID</view>
+            <view class="info-value">{{ order.uid }}</view>
+          </view>
+          <view class="info-item">
+            <view class="info-label">创建时间</view>
+            <view class="info-value">
+              <uni-dateformat :date="order.create_time"></uni-dateformat>
+            </view>
+          </view>
+          <view class="info-item">
+            <view class="info-label">订单金额</view>
+            <view class="info-value">¥{{ order.price || 0 }}</view>
+          </view>
+          <view class="info-item" v-if="order.order_type === 'buy'">
+            <view class="info-label">预估商品价格</view>
+            <view class="info-value">¥{{ order.estimated_price || 0 }}</view>
+          </view>
+          <view class="info-item" v-if="order.order_type === 'buy'">
+            <view class="info-label">配送费</view>
+            <view class="info-value">¥{{ order.delivery_fee || 0 }}</view>
+          </view>
+          <view class="info-item" v-if="order.order_type === 'buy'">
+            <view class="info-label">购买模式</view>
+            <view class="info-value">{{ order.purchase_mode === 'fixed' ? '指定商家' : '就近购买' }}</view>
+          </view>
+          <view class="info-item">
+            <view class="info-label">骑手</view>
+            <view class="info-value">{{ order.rider_name || '未分配' }}{{ order.rider_id ? ' (' + order.rider_id + ')' : '' }}</view>
+          </view>
+        </view>
       </view>
-    </uni-forms>
+
+      <!-- 配送信息卡片 -->
+      <view class="card" v-if="order.order_type === 'send'">
+        <view class="card-title">配送信息</view>
+        <view class="info-grid">
+          <view class="info-item info-item--full">
+            <view class="info-label">取件地址</view>
+            <view class="info-value">{{ order.pickup_address || '-' }}</view>
+          </view>
+          <view class="info-item info-item--full">
+            <view class="info-label">收货地址</view>
+            <view class="info-value">{{ order.delivery_address || '-' }}</view>
+          </view>
+          <view class="info-item">
+            <view class="info-label">物品类型</view>
+            <view class="info-value">{{ order.item_type || '-' }}</view>
+          </view>
+          <view class="info-item">
+            <view class="info-label">物品重量</view>
+            <view class="info-value">{{ order.item_weight || '-' }} kg</view>
+          </view>
+          <view class="info-item">
+            <view class="info-label">取件时间</view>
+            <view class="info-value">{{ order.pickup_time || '-' }}</view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 代购信息卡片 -->
+      <view class="card" v-if="order.order_type === 'buy'">
+        <view class="card-title">代购信息</view>
+        <view class="info-grid">
+          <view class="info-item info-item--full">
+            <view class="info-label">物品描述</view>
+            <view class="info-value">{{ order.item_description || '-' }}</view>
+          </view>
+          <view class="info-item info-item--full">
+            <view class="info-label">收货地址</view>
+            <view class="info-value">{{ order.delivery_address || '-' }}</view>
+          </view>
+          <view class="info-item info-item--full" v-if="order.remark">
+            <view class="info-label">备注</view>
+            <view class="info-value">{{ order.remark }}</view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 配送信息补充 -->
+      <view class="card" v-if="order.order_type === 'buy' && order.remark">
+        <view class="card-title">备注</view>
+        <view class="info-value" style="padding: 8px 0;">{{ order.remark }}</view>
+      </view>
+
+      <!-- 操作区 -->
+      <view class="card" v-if="canChangeStatus(order.status)">
+        <view class="card-title">订单操作</view>
+        <view class="action-buttons">
+          <button
+            v-for="s in nextStatuses"
+            :key="s.value"
+            class="uni-button"
+            :type="s.type"
+            @click="changeStatus(s.value)"
+          >标记为{{ s.label }}</button>
+        </view>
+        <view class="rider-form" style="margin-top: 16px;">
+          <view class="form-row">
+            <view class="form-label">骑手ID</view>
+            <input class="form-input" v-model="riderId" placeholder="输入骑手ID" />
+          </view>
+          <view class="form-row">
+            <view class="form-label">骑手姓名</view>
+            <input class="form-input" v-model="riderName" placeholder="输入骑手姓名" />
+          </view>
+          <button class="uni-button" type="primary" size="mini" @click="assignRider">保存骑手信息</button>
+        </view>
+      </view>
+
+      <view class="back-btn-wrap">
+        <button class="uni-button" style="width: 100px;" @click="goBack">返回列表</button>
+      </view>
+    </view>
+
+    <view v-else class="loading-state">加载中...</view>
   </view>
 </template>
 
 <script>
-  import { validator } from '../../js_sdk/validator/order.js';
+  const db = uniCloud.database()
 
-  const db = uniCloud.database();
-  const dbCmd = db.command;
-  const dbCollectionName = 'order';
-
-  function getValidator(fields) {
-    let result = {}
-    for (let key in validator) {
-      if (fields.includes(key)) {
-        result[key] = validator[key]
-      }
-    }
-    return result
+  const STATUS_MAP = {
+    pending: '待接单',
+    accepted: '已接单',
+    in_progress: '配送中',
+    completed: '已完成',
+    cancelled: '已取消'
   }
-
-  
+  const STATUS_TAG = {
+    pending: 'warning',
+    accepted: 'info',
+    in_progress: 'primary',
+    completed: 'success',
+    cancelled: 'danger'
+  }
+  const STATUS_TRANSITION = {
+    pending: ['accepted', 'cancelled'],
+    accepted: ['in_progress', 'cancelled'],
+    in_progress: ['completed', 'cancelled'],
+    completed: [],
+    cancelled: []
+  }
+  const NEXT_STATUS_META = {
+    accepted: { label: '已接单', type: 'info' },
+    in_progress: { label: '配送中', type: 'primary' },
+    completed: { label: '已完成', type: 'success' },
+    cancelled: { label: '已取消', type: 'warn' }
+  }
 
   export default {
     data() {
-      let formData = {
-        "uid": "",
-        "order_type": "",
-        "status": "pending",
-        "create_time": null,
-        "price": null,
-        "rider_id": "",
-        "rider_name": "",
-        "pickup_address": "",
-        "delivery_address": "",
-        "item_type": "",
-        "item_weight": null,
-        "remark": "",
-        "pickup_time": "",
-        "item_description": "",
-        "estimated_price": null,
-        "delivery_fee": null,
-        "purchase_mode": ""
-      }
       return {
-        formData,
-        formOptions: {
-          "order_type_localdata": [
-            {
-              "value": "send",
-              "text": "send"
-            },
-            {
-              "value": "buy",
-              "text": "buy"
-            }
-          ],
-          "status_localdata": [
-            {
-              "value": "pending",
-              "text": "pending"
-            },
-            {
-              "value": "accepted",
-              "text": "accepted"
-            },
-            {
-              "value": "in_progress",
-              "text": "in_progress"
-            },
-            {
-              "value": "completed",
-              "text": "completed"
-            },
-            {
-              "value": "cancelled",
-              "text": "cancelled"
-            }
-          ],
-          "purchase_mode_localdata": [
-            {
-              "value": "near",
-              "text": "near"
-            },
-            {
-              "value": "fixed",
-              "text": "fixed"
-            }
-          ]
-        },
-        rules: {
-          ...getValidator(Object.keys(formData))
-        }
+        order: {},
+        riderId: '',
+        riderName: ''
+      }
+    },
+    computed: {
+      nextStatuses() {
+        const current = this.order.status
+        if (!current) return []
+        const allowed = STATUS_TRANSITION[current] || []
+        return allowed.map(v => ({ value: v, label: NEXT_STATUS_META[v].label, type: NEXT_STATUS_META[v].type }))
       }
     },
     onLoad(e) {
       if (e.id) {
-        const id = e.id
-        this.formDataId = id
-        this.getDetail(id)
+        this.loadOrder(e.id)
       }
     },
-    onReady() {
-      this.$refs.form.setRules(this.rules)
-    },
     methods: {
-      
-      /**
-       * 验证表单并提交
-       */
-      submit() {
-        uni.showLoading({
-          mask: true
-        })
-        this.$refs.form.validate().then((res) => {
-          return this.submitForm(res)
-        }).catch(() => {
-        }).finally(() => {
-          uni.hideLoading()
-        })
-      },
+      statusText(s) { return STATUS_MAP[s] || s },
+      statusTagType(s) { return STATUS_TAG[s] || 'default' },
+      canChangeStatus(s) { return s !== 'completed' && s !== 'cancelled' },
 
-      /**
-       * 提交表单
-       */
-      submitForm(value) {
-        // 使用 clientDB 提交数据
-        return db.collection(dbCollectionName).doc(this.formDataId).update(value).then((res) => {
-          uni.showToast({
-            title: '修改成功'
-          })
-          this.getOpenerEventChannel().emit('refreshData')
-          setTimeout(() => uni.navigateBack(), 500)
-        }).catch((err) => {
-          uni.showModal({
-            content: err.message || '请求服务失败',
-            showCancel: false
-          })
-        })
-      },
-
-      /**
-       * 获取表单数据
-       * @param {Object} id
-       */
-      getDetail(id) {
-        uni.showLoading({
-          mask: true
-        })
-        db.collection(dbCollectionName).doc(id).field("uid,order_type,status,create_time,price,rider_id,rider_name,pickup_address,delivery_address,item_type,item_weight,remark,pickup_time,item_description,estimated_price,delivery_fee,purchase_mode").get().then((res) => {
-          const data = res.result.data[0]
-          if (data) {
-            this.formData = data
-            
+      async loadOrder(id) {
+        uni.showLoading({ mask: true })
+        try {
+          const res = await db.collection('order').doc(id).get()
+          if (res.result.data && res.result.data.length) {
+            this.order = res.result.data[0]
+            this.riderId = this.order.rider_id || ''
+            this.riderName = this.order.rider_name || ''
           }
-        }).catch((err) => {
-          uni.showModal({
-            content: err.message || '请求服务失败',
-            showCancel: false
-          })
-        }).finally(() => {
+        } catch (e) {
+          uni.showModal({ content: e.message, showCancel: false })
+        } finally {
           uni.hideLoading()
-        })
+        }
+      },
+
+      async changeStatus(newStatus) {
+        uni.showLoading({ mask: true })
+        try {
+          await db.collection('order').doc(this.order._id).update({ status: newStatus })
+          uni.showToast({ title: '状态已更新' })
+          this.order.status = newStatus
+          this.getOpenerEventChannel().emit('refreshData')
+        } catch (e) {
+          uni.showModal({ content: '更新失败: ' + e.message, showCancel: false })
+        } finally {
+          uni.hideLoading()
+        }
+      },
+
+      async assignRider() {
+        if (!this.riderId && !this.riderName) {
+          uni.showToast({ title: '请填写骑手信息', icon: 'none' })
+          return
+        }
+        uni.showLoading({ mask: true })
+        try {
+          await db.collection('order').doc(this.order._id).update({
+            rider_id: this.riderId,
+            rider_name: this.riderName
+          })
+          uni.showToast({ title: '骑手信息已更新' })
+          this.order.rider_id = this.riderId
+          this.order.rider_name = this.riderName
+          this.getOpenerEventChannel().emit('refreshData')
+        } catch (e) {
+          uni.showModal({ content: '操作失败: ' + e.message, showCancel: false })
+        } finally {
+          uni.hideLoading()
+        }
+      },
+
+      goBack() {
+        this.getOpenerEventChannel().emit('refreshData')
+        uni.navigateBack()
       }
     }
   }
 </script>
+
+<style>
+  .order-detail {
+    padding: 16px;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .card-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #303133;
+    margin-bottom: 12px;
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .info-item--full {
+    grid-column: span 2;
+  }
+
+  .info-label {
+    font-size: 12px;
+    color: #909399;
+    margin-bottom: 2px;
+  }
+
+  .info-value {
+    font-size: 14px;
+    color: #303133;
+    word-break: break-all;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+
+  .rider-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .form-row {
+    display: flex;
+    align-items: center;
+  }
+
+  .form-label {
+    width: 80px;
+    font-size: 13px;
+    color: #606266;
+    flex-shrink: 0;
+  }
+
+  .form-input {
+    flex: 1;
+    border: 1px solid #dcdfe6;
+    border-radius: 4px;
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+
+  .back-btn-wrap {
+    text-align: center;
+    margin-top: 16px;
+  }
+
+  .loading-state {
+    text-align: center;
+    padding: 40px;
+    color: #909399;
+  }
+</style>
